@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\File;
+use App\Observers\FileObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,5 +26,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Schema::defaultStringLength(191);
+
+        $this->loadObservers();
+    }
+
+    /**
+     * Load observers
+     *
+     * @return void
+     */
+    private function loadObservers()
+    {
+        File::observe(FileObserver::class);
     }
 }
