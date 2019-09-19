@@ -27,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
     {
         \Schema::defaultStringLength(191);
 
+        $this->loadMigrationsFrom([
+            base_path() . '/database/migrations/2019'
+        ]);
+
         $this->loadObservers();
     }
 

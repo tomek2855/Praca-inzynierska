@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Interfaces\AuditableInterface;
 use App\Models\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class File extends Model implements AuditableInterface
 {
@@ -26,11 +27,16 @@ class File extends Model implements AuditableInterface
         'deleted_at' => 'datetime',
     ];
 
-    /**
-     * @var array
-     */
-    protected $attributes = [
-        'permanently_deleted' => false,
-    ];
 
+    /**
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        $storage = Storage::disk($this->driver);
+        $storage->delete($this->path);
+
+        return parent::delete();
+    }
 }
