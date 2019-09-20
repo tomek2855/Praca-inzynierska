@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\File;
-use App\Observers\FileObserver;
+use App\Models\UserRoles;
+use App\Observers\StoredByUserObserver;
+use App\Observers\UserRolesObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -41,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private function loadObservers()
     {
-        File::observe(FileObserver::class);
+        File::observe(StoredByUserObserver::class);
+        UserRoles::observe(StoredByUserObserver::class);
     }
 }
