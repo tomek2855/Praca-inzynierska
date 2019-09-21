@@ -4,14 +4,17 @@ namespace Tests\Unit;
 
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class RoleTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testAdminRoleExistsTest()
     {
-        Artisan::call('migrate:fresh');
+        $this->refreshDatabase();
 
         $this->assertNull(Role::getAdminRole());
 
@@ -25,7 +28,7 @@ class RoleTest extends TestCase
 
     public function testProjectOwnerRoleExistsTest()
     {
-        Artisan::call('migrate:fresh');
+        $this->refreshDatabase();
 
         $this->assertNull(Role::getProjectOwnerRole());
 
@@ -39,7 +42,7 @@ class RoleTest extends TestCase
 
     public function testProjectUserRoleExistsTest()
     {
-        Artisan::call('migrate:fresh');
+        $this->refreshDatabase();
 
         $this->assertNull(Role::getProjectUserRole());
 
@@ -53,7 +56,7 @@ class RoleTest extends TestCase
 
     public function testProjectReaderRoleExistsTest()
     {
-        Artisan::call('migrate:fresh');
+        $this->refreshDatabase();
 
         $this->assertNull(Role::getProjectReaderRole());
 
@@ -67,8 +70,9 @@ class RoleTest extends TestCase
 
     public function testUserHasAdminRolesTest()
     {
-        $user = factory(User::class)->make();
-        $user->save();
+        $this->seed('CreateDefaultRoles');
+
+        $user = factory(User::class)->create();
 
         $this->assertFalse($user->isAdmin());
 
