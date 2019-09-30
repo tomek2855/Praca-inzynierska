@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class ProjectUserTestTest extends TestCase
 {
-    public function testFileAuditableTest()
+    public function testProjectsUsersTest()
     {
         $user = factory(User::class)->create();
         Auth::login($user);
@@ -19,5 +19,14 @@ class ProjectUserTestTest extends TestCase
 
         $this->assertEmpty($user->projects);
         $this->assertEmpty($project->users);
+
+        $user->projects()->attach($project);
+
+        $this->assertDatabaseHas('project_user', [
+            'created_by' => $user->id,
+            'updated_by' => $user->id,
+            'user_id' => $user->id,
+            'project_id' => $project->id,
+        ]);
     }
 }
