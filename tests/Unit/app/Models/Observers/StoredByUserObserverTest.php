@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\File;
+use App\Models\Issue;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -65,5 +66,26 @@ class StoredByUserObserverTest extends TestCase
 
         $this->assertEquals($user->id, $projectUser->createdBy->id);
         $this->assertEquals($user->id, $projectUser->updatedBy->id);
+    }
+
+    public function testIssueAuditableTest()
+    {
+        $user = factory(User::class)->create();
+        Auth::login($user);
+
+        $project = factory(Project::class)->create();
+
+        $user->projects()->attach($project);
+
+        $issue = factory(Issue::class)->make();
+        $issue->assigned_user_id = $user->id;
+        $issue->project_id = $project->id;
+        $issue->save();
+
+        $this->assertInstanceOf(User::class, $issue->createdBy);
+        $this->assertInstanceOf(User::class, $issue->updatedBy);
+
+        $this->assertEquals($user->id, $issue->createdBy->id);
+        $this->assertEquals($user->id, $issue->updatedBy->id);
     }
 }

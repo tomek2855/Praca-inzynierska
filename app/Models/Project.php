@@ -37,6 +37,14 @@ class Project extends Model implements AuditableInterface
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function issues()
+    {
+        return $this->hasMany(Issue::class);
+    }
+
+    /**
      * @return User|null
      */
     public function getOwner()

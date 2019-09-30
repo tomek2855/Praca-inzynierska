@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\File;
+use App\Models\Issue;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\UserRoles;
@@ -48,5 +49,6 @@ class AppServiceProvider extends ServiceProvider
         File::observe(StoredByUserObserver::class);
         Project::observe(StoredByUserObserver::class);
         ProjectUser::observe(StoredByUserObserver::class);
+        Issue::observe(StoredByUserObserver::class);
     }
 }
