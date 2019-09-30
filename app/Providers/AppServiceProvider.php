@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\File;
+use App\Models\Project;
+use App\Models\ProjectUser;
 use App\Models\UserRoles;
 use App\Observers\StoredByUserObserver;
 use App\Observers\UserRolesObserver;
@@ -44,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
     private function loadObservers()
     {
         File::observe(StoredByUserObserver::class);
-        UserRoles::observe(StoredByUserObserver::class);
+        Project::observe(StoredByUserObserver::class);
+        ProjectUser::observe(StoredByUserObserver::class);
     }
 }

@@ -18,6 +18,7 @@ class CreateAdminUser extends Seeder
         $user->email = 'admin@admin.pl';
         $user->email_verified_at = now();
         $user->password = Hash::make('admin');
+        $user->is_admin = true;
         $user->save();
     }
 }

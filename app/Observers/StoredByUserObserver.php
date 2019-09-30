@@ -44,7 +44,7 @@ class StoredByUserObserver
      */
     public function deleted(Object $object)
     {
-        //
+        $object->deleted_by = Auth::id() ?? null;
     }
 
     /**
