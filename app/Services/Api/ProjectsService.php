@@ -3,10 +3,15 @@
 namespace App\Services\Api;
 
 use App\Models\Project;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ProjectsService
 {
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function index(Request $request)
     {
         if ($request->has('q') && !empty($request->get('q')))
@@ -17,13 +22,59 @@ class ProjectsService
         return Project::paginate(15);
     }
 
-    public function store(Request $request)
+    /**
+     * @param Request $request
+     * @return Project|null
+     */
+    public function store(Request $request) : ?Project
     {
         return Project::create($request->all());
     }
 
-    public function show($id)
+    /**
+     * @param int $id
+     * @return Project|null
+     */
+    public function show(int $id) : ?Project
     {
-        return Project::with('issues')->findOrFail($id);
+        try
+        {
+            $project = Project::findOrFail($id);
+
+            return $project;
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return Project|null
+     */
+    public function update(Request $request, int $id) : ?Project
+    {
+        try
+        {
+            $project = Project::with('issues')->findOrFail($id);
+            $project->update($request->all());
+
+            return $project;
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return int
+     */
+    public function destroy(int $id)
+    {
+        return Project::destroy($id);
     }
 }

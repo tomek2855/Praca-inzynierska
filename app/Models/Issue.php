@@ -36,6 +36,9 @@ class Issue extends Model implements AuditableInterface
         return $this->hasOne(Project::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function assignedUser()
     {
         return $this->hasOne(User::class);

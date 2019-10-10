@@ -37,4 +37,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Project::class)->using(ProjectUser::class)->withTimestamps()->withPivot(['role', 'created_by', 'updated_by']);
     }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
 }
