@@ -2,71 +2,99 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Project;
-use App\Services\Api\ProjectsService;
+use App\Http\Requests\Issue\StoreIssueRequest;
+use App\Services\Api\ProjectIssuesService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectIssuesController extends Controller
 {
-    protected $projectsService;
+    protected $projectIssuesService;
 
-    public function __construct(ProjectsService $projectsService)
+    public function __construct(ProjectIssuesService $projectIssuesService)
     {
-        $this->projectsService = $projectsService;
+        $this->projectIssuesService = $projectIssuesService;
+        Auth::loginUsingId(1);
     }
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @param int $projectId
+     * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request, int $projectId)
     {
-        return $this->projectsService->index($request);
+        $result = $this->projectIssuesService->index($request, $projectId);
+
+        if ($result)
+        {
+            return Response::create($result);
+        }
+
+        return Response::create('', Response::HTTP_NOT_FOUND);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreIssueRequest $request
+     * @param int $projectId
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreIssueRequest $request, int $projectId)
     {
-        return $this->projectsService->store($request);
+        $result = $this->projectIssuesService->store($request, $projectId);
+
+        if ($result)
+        {
+            return Response::create($result, Response::HTTP_CREATED);
+        }
+
+        return Response::create('', Response::HTTP_NOT_FOUND);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $projectId
+     * @param $issueId
+     * @return Response
      */
-    public function show($id)
+    public function show($projectId, $issueId)
     {
-        return $this->projectsService->show($id);
+        $result = $this->projectIssuesService->show($projectId, $issueId);
+
+        if ($result)
+        {
+            return Response::create($result);
+        }
+
+        return Response::create('', Response::HTTP_NOT_FOUND);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param StoreIssueRequest $request
+     * @param $projectId
+     * @param $issueId
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreIssueRequest $request, $projectId, $issueId)
     {
-        //
+        $result = $this->projectIssuesService->update($request, $projectId, $issueId);
+
+        if ($result)
+        {
+            return Response::create($this->projectIssuesService->show($projectId, $issueId));
+        }
+
+        return Response::create('', Response::HTTP_NOT_FOUND);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $projectId
+     * @param $issueId
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($projectId, $issueId)
     {
-        return Project::destroy($id);
+        return Response::create($this->projectIssuesService->destroy($projectId, $issueId));
     }
 }

@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Http\Requests\Project;
+namespace App\Http\Requests\Issue;
 
 use App\Extensions\RoleResolver\UserProjectRoleResolver;
 use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class StoreProjectRequest extends FormRequest
+class StoreIssueRequest extends FormRequest
 {
     /**
      * @return bool
      */
     public function authorize()
     {
+        $project = Project::findOrFail($this->route('projectId'));
         return Auth::user()
-            && UserProjectRoleResolver::userHasAccessTo(Auth::user(), null, UserProjectRoleResolver::USER_CAN_CREATE_PROJECT);
+            && $project
+            && UserProjectRoleResolver::userHasAccessTo(Auth::user(), $project, UserProjectRoleResolver::USER_CAN_CREATE_ISSUE);
     }
 
     /**

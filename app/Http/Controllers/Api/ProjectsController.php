@@ -56,11 +56,11 @@ class ProjectsController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param StoreProjectRequest $request
      * @param $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreProjectRequest $request, $id)
     {
         $result = $this->projectsService->update($request, $id);
 

@@ -58,7 +58,7 @@ class ProjectsService
     {
         try
         {
-            $project = Project::with('issues')->findOrFail($id);
+            $project = Project::findOrFail($id);
             $project->update($request->all());
 
             return $project;
@@ -73,7 +73,7 @@ class ProjectsService
      * @param int $id
      * @return int
      */
-    public function destroy(int $id)
+    public function destroy(int $id) : int
     {
         return Project::destroy($id);
     }
