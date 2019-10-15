@@ -29,6 +29,7 @@ class Bootstrap implements BeforeFirstTestHook, AfterLastTestHook
             'config:cache',
             'event:cache',
             'migrate:fresh',
+            'passport:install'
         ];
 
         foreach ($commands as $command) {

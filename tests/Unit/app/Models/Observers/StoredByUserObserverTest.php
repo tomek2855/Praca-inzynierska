@@ -6,7 +6,7 @@ use App\Models\File;
 use App\Models\Issue;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class StoredByUserObserverTest extends TestCase
@@ -14,7 +14,7 @@ class StoredByUserObserverTest extends TestCase
     public function testFileAuditableTest()
     {
         $user = factory(User::class)->create();
-        Auth::login($user);
+        Passport::actingAs($user);
 
         $file = factory(File::class)->make();
 
@@ -33,7 +33,7 @@ class StoredByUserObserverTest extends TestCase
     public function testProjectAuditableTest()
     {
         $user = factory(User::class)->create();
-        Auth::login($user);
+        Passport::actingAs($user);
 
         $project = factory(Project::class)->make();
 
@@ -52,7 +52,7 @@ class StoredByUserObserverTest extends TestCase
     public function testProjectUserAuditableTest()
     {
         $user = factory(User::class)->create();
-        Auth::login($user);
+        Passport::actingAs($user);
 
         $project = factory(Project::class)->make();
         $project->save();
@@ -71,7 +71,7 @@ class StoredByUserObserverTest extends TestCase
     public function testIssueAuditableTest()
     {
         $user = factory(User::class)->create();
-        Auth::login($user);
+        Passport::actingAs($user);
 
         $project = factory(Project::class)->create();
 

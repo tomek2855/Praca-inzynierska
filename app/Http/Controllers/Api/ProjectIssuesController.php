@@ -16,7 +16,6 @@ class ProjectIssuesController extends Controller
     public function __construct(ProjectIssuesService $projectIssuesService)
     {
         $this->projectIssuesService = $projectIssuesService;
-        Auth::loginUsingId(1);
     }
 
     /**

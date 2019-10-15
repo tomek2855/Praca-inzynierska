@@ -18,6 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('Api')->group(function () {
+   Route::post('/login', 'AuthController@login');
+});
+
+Route::middleware('auth:api')->namespace('Api')->group(function () {
+    Route::post('/logout', 'AuthController@logout');
+
     Route::apiResource('/projects', 'ProjectsController');
     Route::apiResource('/projects/{projectId}/issues', 'ProjectIssuesController');
 });

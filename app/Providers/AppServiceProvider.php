@@ -10,6 +10,7 @@ use App\Models\UserRoles;
 use App\Observers\StoredByUserObserver;
 use App\Observers\UserRolesObserver;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Schema::defaultStringLength(191);
+
+        Passport::routes();
 
         $this->loadMigrationsFrom([
             base_path() . '/database/migrations/2019'

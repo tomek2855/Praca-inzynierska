@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class ProjectUserTestTest extends TestCase
@@ -12,7 +12,7 @@ class ProjectUserTestTest extends TestCase
     public function testProjectsUsersTest()
     {
         $user = factory(User::class)->create();
-        Auth::login($user);
+        Passport::actingAs($user);
 
         $project = factory(Project::class)->make();
         $project->save();

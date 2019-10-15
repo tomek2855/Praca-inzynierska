@@ -11,8 +11,10 @@
 |
 */
 
-Auth::routes();
+//Auth::routes();
 
-Route::middleware('auth')->group(function () {
-    Route::get('{all}', 'HomeController@index')->where('all', '.*');
-});
+Route::get('{all}', 'HomeController@index')->where('all', '.*');
+
+//Route::middleware('auth')->group(function () {
+//    Route::get('{all}', 'HomeController@index')->where('all', '.*');
+//});
