@@ -1,5 +1,9 @@
 <template>
+    <div class="container">
+        Aplikacja webowa do zarządzania projektami.
 
+        <pre>Tomasz Przybyło</pre>
+    </div>
 </template>
 
 <script>

@@ -1,6 +1,7 @@
 class DataService {
 
     basePath() {
+        this.checkForToken()
         return "/api/"
     }
 
@@ -30,6 +31,17 @@ class DataService {
 
     delete(elem) {
         return window.axios.delete(elem.id)
+    }
+
+    checkForToken() {
+        if (localStorage.getItem("token")) {
+            window.axios.interceptors.request.use(
+                (config) => {
+                    config.headers['Authorization'] = `Bearer ${ localStorage.token }`
+                    return config
+                }, (error) => {console.log(error)}
+            )
+        }
     }
 }
 

@@ -1,17 +1,10 @@
 <template>
     <div class="container">
-        <h3>Lista projektów</h3>
-
-        <div>
-            <input v-model="query" @keypress="getResults" placeholder="Wyszukaj">
-            <router-link :to="{ name: 'projects.add' }" class="btn btn-success">Dodaj projekt</router-link>
-        </div>
+        <bar-component :title="'Lista projektów'" :search="true" @searchClicked="searchClicked"></bar-component>
 
         <div v-if="error" v-text="error" style="color: red;"></div>
 
-        <ul>
-            <li v-for="project in projects"><router-link :to="{ name: 'projects.show', params: { id: project.id } }">{{ project.title }}</router-link></li>
-        </ul>
+        <table-component :head="tableHead" :data="projects" :links="tableLink"></table-component>
 
         <pagination :data="data" @pagination-change-page="getResults"></pagination>
     </div>
@@ -27,6 +20,10 @@
                 projects: {},
                 query: "",
                 error: "",
+                tableHead: [{id: "id", name: "#"}, {id: "title", name: "Projekt"}, {id: "updated_at", name: "Data modyfikacji"}],
+                tableLink: { name: "projects.show", params: { id: "id" } },
+
+                // menu: [{name: "Test", link: {name: "projects.show", params: {id: 111}}}, {name: "Test", link: {name: "project.show", params: {id: 111}}}],
             }
         },
         mounted() {
@@ -43,8 +40,12 @@
                     this.data = response.data
                     this.projects = response.data.data
                 }).catch(error => {
-                    this.error = "Error"
+                    this.error = error
                 })
+            },
+            searchClicked(query) {
+                this.query = query
+                this.getResults()
             }
         }
     }

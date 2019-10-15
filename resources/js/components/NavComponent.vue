@@ -1,7 +1,7 @@
 <template>
     <div>
         <li v-for="e in elements" class="nav-item">
-            <router-link :to="e.path" v-text="e.name" class="nav-link"></router-link>
+            <router-link v-if="e.show" :to="e.path" v-text="e.name" @refreshNavBar="setElements" class="nav-link"></router-link>
         </li>
     </div>
 </template>
@@ -15,16 +15,40 @@
             }
         },
         mounted() {
-            this.elements = [
-                {
-                    path: { name: "home" },
-                    name: "Strona główna"
-                },
-                {
-                    path: { name: 'projects.index' },
-                    name: "Projekty"
-                }
-            ]
+            this.setElements()
+
+            this.$root.$on('refreshNavBar', this.setElements)
+        },
+        methods: {
+            setElements() {
+                this.elements = [
+                    {
+                        path: { name: "home" },
+                        name: "Strona główna",
+                        show: true
+                    },
+                    {
+                        path: { name: 'projects.index' },
+                        name: "Projekty",
+                        show: (localStorage.getItem("token"))
+                    },
+                    {
+                        path: { name: "issues.user" },
+                        name: "Twoje zadania",
+                        show: (localStorage.getItem("token"))
+                    },
+                    {
+                        path: {name: "logout"},
+                        name: "Wyloguj się",
+                        show: (localStorage.getItem("token"))
+                    },
+                    {
+                        path: { name: "login" },
+                        name: "Zaloguj się",
+                        show: !(localStorage.getItem("token"))
+                    }
+                ]
+            }
         }
     }
 </script>
