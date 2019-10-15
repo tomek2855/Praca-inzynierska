@@ -46,6 +46,14 @@ window.router = new VueRouter({
             }
         },
         {
+            path: "/projects/add",
+            name: "projects.add",
+            component: ProjectAddComponent,
+            props: {
+                service: ProjectsService
+            }
+        },
+        {
             path: "/projects/:id",
             name: "projects.show",
             component: ProjectComponent,

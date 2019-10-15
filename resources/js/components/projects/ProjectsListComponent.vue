@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <bar-component :title="'Lista projektów'" :search="true" @searchClicked="searchClicked"></bar-component>
+        <bar-component :title="'Lista projektów'" :menu="menu" :search="true" @searchClicked="searchClicked"></bar-component>
 
         <div v-if="error" v-text="error" style="color: red;"></div>
 
@@ -23,6 +23,7 @@
                 tableHead: [{id: "id", name: "#"}, {id: "title", name: "Projekt"}, {id: "updated_at", name: "Data modyfikacji"}],
                 tableLink: { name: "projects.show", params: { id: "id" } },
 
+                menu: [{ name: "Dodaj projekt", link: { name: "projects.add" } }]
                 // menu: [{name: "Test", link: {name: "projects.show", params: {id: 111}}}, {name: "Test", link: {name: "project.show", params: {id: 111}}}],
             }
         },
