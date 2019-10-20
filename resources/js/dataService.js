@@ -23,7 +23,7 @@ class DataService {
 
     save(elem) {
         if (elem.id) {
-            return window.axios.update(this.path() + elem.id, elem)
+            return window.axios.put(this.path() + elem.id, elem)
         } else {
             return window.axios.post(this.path(), elem)
         }

@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function login(Request $request)
     {
         $user = User::where('name', $request->get('user'))->first();
@@ -29,6 +33,10 @@ class AuthController extends Controller
         return Response::create(['message' => 'User not exists'], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();

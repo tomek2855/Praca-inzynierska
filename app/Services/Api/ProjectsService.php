@@ -2,9 +2,11 @@
 
 namespace App\Services\Api;
 
+use App\Extensions\RoleResolver\UserProjectRoleResolver;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ProjectsService
 {
@@ -76,5 +78,25 @@ class ProjectsService
     public function destroy(int $id) : int
     {
         return Project::destroy($id);
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Support\Collection|null
+     */
+    public function userList(int $id) : ?Collection
+    {
+        try
+        {
+            $project = Project::findOrFail($id);
+
+            $usersList = UserProjectRoleResolver::projectUsersList($project);
+
+            return $usersList;
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return null;
+        }
     }
 }

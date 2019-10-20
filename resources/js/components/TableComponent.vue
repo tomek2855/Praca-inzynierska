@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="table table-sm table-bordered table-hover">
+        <table v-if="data.length" class="table table-sm table-bordered table-hover">
             <thead>
                 <tr>
                     <th v-for="item in head">{{ item.name }}</th>
@@ -12,6 +12,9 @@
                 </tr>
             </tbody>
         </table>
+        <div v-else>
+            <span>Ładowanie danych</span>
+        </div>
     </div>
 </template>
 
@@ -35,5 +38,7 @@
 </script>
 
 <style scoped>
-
+    span {
+        color: #284257;
+    }
 </style>

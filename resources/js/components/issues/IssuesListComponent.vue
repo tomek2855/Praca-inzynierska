@@ -1,10 +1,10 @@
 <template>
     <div class="container">
-        <bar-component :title="'Lista projektów'" :menu="menu" :search="true" @searchClicked="searchClicked"></bar-component>
+        <bar-component :title="'Twoje zadania'" :search="true" @searchClicked="searchClicked"></bar-component>
 
         <div v-if="error" v-text="error" style="color: red;"></div>
 
-        <table-component :head="tableHead" :data="projects" :links="tableLink"></table-component>
+        <table-component :head="tableHead" :data="issues" :links="tableLink"></table-component>
 
         <pagination :data="data" @pagination-change-page="getResults"></pagination>
     </div>
@@ -12,22 +12,20 @@
 
 <script>
     export default {
-        name: "projects-list-component",
+        name: "issue-list-component",
         props: ["service"],
         data() {
             return {
                 data: {},
-                projects: {},
+                issues: {},
                 query: "",
                 error: "",
-                tableHead: [{id: "id", name: "#"}, {id: "title", name: "Projekt"}, {id: "updated_at", name: "Data modyfikacji"}],
-                tableLink: { name: "projects.show", params: { id: "id" } },
-
-                menu: [{ name: "Dodaj projekt", link: { name: "projects.add" } }]
+                tableHead: [{id: "id", name: "#"}, {id: "title", name: "Zadanie"}, {id: "updated_at", name: "Data modyfikacji"}],
+                tableLink: { name: "issues.show", params: { id: "id", projectId: "project_id" } },
             }
         },
         mounted() {
-            this.getResults();
+            this.getResults()
         },
         methods: {
             getResults(page = 1) {
@@ -38,7 +36,7 @@
                     }
                 }).then(response => {
                     this.data = response.data
-                    this.projects = response.data.data
+                    this.issues = response.data.data
                 }).catch(error => {
                     this.error = error
                 })
@@ -52,7 +50,5 @@
 </script>
 
 <style scoped>
-    li {
-        list-style: none;
-    }
+
 </style>

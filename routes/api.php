@@ -26,4 +26,7 @@ Route::middleware('auth:api')->namespace('Api')->group(function () {
 
     Route::apiResource('/projects', 'ProjectsController');
     Route::apiResource('/projects/{projectId}/issues', 'ProjectIssuesController');
+    Route::apiResource('/issues', 'IssuesController');
+
+    Route::get('/projects/{projectId}/userList', 'ProjectsController@getUserList');
 });

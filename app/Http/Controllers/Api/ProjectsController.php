@@ -48,7 +48,7 @@ class ProjectsController extends Controller
 
         if ($result)
         {
-            return Response::create($this->projectsService->show($id));
+            return Response::create($result);
         }
 
         return Response::create('', Response::HTTP_NOT_FOUND);
@@ -78,5 +78,14 @@ class ProjectsController extends Controller
     public function destroy($id)
     {
         return Response::create($this->projectsService->destroy($id));
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     */
+    public function getUserList($id)
+    {
+        Return Response::create($this->projectsService->userList($id));
     }
 }

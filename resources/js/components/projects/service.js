@@ -6,6 +6,10 @@ class Service extends DataService {
         return 'projects'
     }
 
+    getUserList(projectId, params = null) {
+        return window.axios(this.path() + projectId + "/userList", params);
+    }
+
 }
 
 export default new Service()

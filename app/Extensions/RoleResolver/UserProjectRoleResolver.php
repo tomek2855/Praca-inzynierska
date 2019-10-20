@@ -5,6 +5,7 @@ namespace App\Extensions\RoleResolver;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class UserProjectRoleResolver
 {
@@ -40,5 +41,20 @@ class UserProjectRoleResolver
                     ]);
             default: return true;
         }
+    }
+
+    /**
+     * @param Project $project
+     * @return Collection
+     */
+    public static function projectUsersList(Project $project) : Collection
+    {
+        $users = ProjectUser::where('project_id', $project->id)->whereIn('role', [
+            ProjectUser::PROJECT_OWNER,
+            ProjectUser::PROJECT_MODERATOR,
+            ProjectUser::PROJECT_USER,
+        ])->with('user')->get()->pluck('user');
+
+        return $users;
     }
 }

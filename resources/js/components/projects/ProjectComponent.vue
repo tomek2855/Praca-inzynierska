@@ -1,20 +1,10 @@
 <template>
     <div class="container">
-        <h3>{{ project.title }}</h3>
-        <div class="btn-group">
-            <button v-bind:class="buttonTabClass(0)" @click="setTab(0)" class="btn">Lista zagadnień</button>
-            <button v-bind:class="buttonTabClass(1)" @click="setTab(1)" class="btn">Informacje</button>
-            <button v-bind:class="buttonTabClass(2)" @click="setTab(2)" class="btn">Pliki</button>
-        </div>
+        <bar-component :title="project.title" :menu="menu"></bar-component>
 
-        <div v-if="tabSelected == 0">
-            <ul>
-                <li v-for="issue in project.issues" v-text="issue.title"></li>
-            </ul>
-        </div>
-        <div v-if="tabSelected == 1">
-            <p v-text="project.content"></p>
-        </div>
+        <p>{{ project.content }}</p>
+
+        <span v-if="error">{{ error }}</span>
     </div>
 </template>
 
@@ -25,28 +15,41 @@
         data() {
             return {
                 project: {},
-                tabSelected: 1
+                error: "",
+                menu: []
             }
         },
         mounted() {
             this.service.show(this.$route.params.id).then(response => {
                 this.project = response.data
+                this.loadMenu()
+            }).catch(error => {
+                this.error = error
             })
         },
         methods: {
-            buttonTabClass (i) {
-                return {
-                    'btn-primary': this.tabSelected == i,
-                    'btn-secondary': this.tabSelected != i
-                }
-            },
-            setTab (i) {
-                this.tabSelected = i;
+            loadMenu() {
+                this.menu = [
+                    {
+                        name: "Dodaj zadanie",
+                        link: { name: "projects.issues.add", params: { projectId: this.project.id } }
+                    },
+                    {
+                        name: "Zadania",
+                        link: { name: "projects.issues", params: { projectId: this.project.id } }
+                    },
+                    {
+                        name: "Opis",
+                        link: { name: "projects.show", params: { id: this.project.id } }
+                    }
+                ]
             }
         }
     }
 </script>
 
 <style scoped>
-
+    span {
+        color: red;
+    }
 </style>
