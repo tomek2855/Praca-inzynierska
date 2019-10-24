@@ -86,6 +86,25 @@ class ProjectsController extends Controller
      */
     public function getUserList($id)
     {
-        Return Response::create($this->projectsService->userList($id));
+        return Response::create($this->projectsService->userList($id));
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     */
+    public function getAssignedUsers($id)
+    {
+        return Response::create($this->projectsService->getAssignedUsers($id));
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function postAssignedUsers(Request $request, $id)
+    {
+        return Response::create($this->projectsService->addAssignedUser($request, $id));
     }
 }

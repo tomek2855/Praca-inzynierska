@@ -14,14 +14,12 @@ class IssuesService
      */
     public function showUserIssues(Request $request)
     {
-        $projects = Auth::user()->projects()->select('id')->get()->pluck('id')->toArray();
-
         if ($request->has('q') && !empty($request->get('q')))
         {
-            return Issue::whereIn('project_id', $projects)->where('title', 'LIKE', '%' . $request->get('q') . '%')->orderBy('project_id')->paginate(15);
+            return Issue::where('assigned_user_id', Auth::id())->where('title', 'LIKE', '%' . $request->get('q') . '%')->orderBy('project_id')->paginate(15);
         }
 
-        return Issue::whereIn('project_id', $projects)->orderBy('project_id')->paginate(15);
+        return Issue::where('assigned_user_id', Auth::id())->orderBy('project_id')->paginate(15);
     }
 
     /**

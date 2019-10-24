@@ -19,6 +19,7 @@
                 this.refreshNavBar()
                 this.$router.push({ name: "home" })
             }).catch(error => {
+                localStorage.removeItem("token")
                 this.error = error
             })
         },

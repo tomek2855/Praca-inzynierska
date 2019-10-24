@@ -2120,6 +2120,7 @@ __webpack_require__.r(__webpack_exports__);
         name: "home"
       });
     })["catch"](function (error) {
+      localStorage.removeItem("token");
       _this.error = error;
     });
   },
@@ -3314,6 +3315,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "project-component",
   props: ["service"],
@@ -3321,19 +3334,13 @@ __webpack_require__.r(__webpack_exports__);
     return {
       project: {},
       error: "",
+      usersToAdd: [],
+      newUser: {},
       menu: []
     };
   },
   mounted: function mounted() {
-    var _this = this;
-
-    this.service.show(this.$route.params.id).then(function (response) {
-      _this.project = response.data;
-
-      _this.loadMenu();
-    })["catch"](function (error) {
-      _this.error = error;
-    });
+    this.init();
   },
   methods: {
     loadMenu: function loadMenu() {
@@ -3362,6 +3369,34 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       }];
+    },
+    init: function init() {
+      var _this = this;
+
+      this.service.show(this.$route.params.id).then(function (response) {
+        _this.project = response.data;
+
+        _this.loadMenu();
+      })["catch"](function (error) {
+        _this.error = error;
+      });
+      this.service.getUsersToAdd(this.$route.params.id).then(function (response) {
+        _this.usersToAdd = response.data;
+      })["catch"](function (error) {
+        _this.error = error;
+      });
+    },
+    addUser: function addUser() {
+      var _this2 = this;
+
+      this.service.addUserToProject(this.project.id, {
+        userId: this.newUser,
+        role: "PROJECT_USER"
+      }).then(function (response) {
+        _this2.init();
+      })["catch"](function (error) {
+        _this2.error = error;
+      });
     }
   }
 });
@@ -42433,7 +42468,60 @@ var render = function() {
         attrs: { title: _vm.project.title, menu: _vm.menu }
       }),
       _vm._v(" "),
-      _c("p", [_vm._v(_vm._s(_vm.project.content))]),
+      _c("blockquote", [_c("p", [_vm._v(_vm._s(_vm.project.content))])]),
+      _vm._v(" "),
+      _c("h5", [_vm._v("Przypisani użytkownicy")]),
+      _vm._v(" "),
+      _c(
+        "ul",
+        _vm._l(_vm.project.users, function(user) {
+          return _c("li", [_vm._v(_vm._s(user.name))])
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newUser,
+              expression: "newUser"
+            }
+          ],
+          staticClass: "form-control",
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.newUser = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              _vm.addUser
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { value: "" } }),
+          _vm._v(" "),
+          _vm._l(_vm.usersToAdd, function(user) {
+            return _c("option", { domProps: { value: user.id } }, [
+              _vm._v(_vm._s(user.name))
+            ])
+          })
+        ],
+        2
+      ),
       _vm._v(" "),
       _vm.error ? _c("span", [_vm._v(_vm._s(_vm.error))]) : _vm._e()
     ],
@@ -57609,9 +57697,7 @@ var files = __webpack_require__("./resources/js sync recursive \\.vue$/");
 
 files.keys().map(function (key) {
   return Vue.component(key.split('/').pop().split('.')[0], files(key)["default"]);
-}); // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// Vue.component('projects-list-component', require('./components/ProjectsListComponent.vue').default);
-
+});
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -59262,7 +59348,19 @@ function (_DataService) {
     key: "getUserList",
     value: function getUserList(projectId) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-      return window.axios(this.path() + projectId + "/userList", params);
+      return window.axios.get(this.path() + projectId + "/userList", params);
+    }
+  }, {
+    key: "getUsersToAdd",
+    value: function getUsersToAdd(projectId) {
+      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      return window.axios.get(this.path() + projectId + "/assignedUsers", params);
+    }
+  }, {
+    key: "addUserToProject",
+    value: function addUserToProject(projectId) {
+      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      return window.axios.post(this.path() + projectId + "/assignedUsers", params);
     }
   }]);
 

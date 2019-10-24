@@ -7,7 +7,15 @@ class Service extends DataService {
     }
 
     getUserList(projectId, params = null) {
-        return window.axios(this.path() + projectId + "/userList", params);
+        return window.axios.get(this.path() + projectId + "/userList", params)
+    }
+
+    getUsersToAdd(projectId, params = null) {
+        return window.axios.get(this.path() + projectId + "/assignedUsers", params)
+    }
+
+    addUserToProject(projectId, params = null) {
+        return window.axios.post(this.path() + projectId + "/assignedUsers", params)
     }
 
 }

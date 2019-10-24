@@ -4,6 +4,8 @@ namespace App\Services\Api;
 
 use App\Extensions\RoleResolver\UserProjectRoleResolver;
 use App\Models\Project;
+use App\Models\ProjectUser;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -41,7 +43,7 @@ class ProjectsService
     {
         try
         {
-            $project = Project::findOrFail($id);
+            $project = Project::with('users')->findOrFail($id);
 
             return $project;
         }
@@ -82,7 +84,7 @@ class ProjectsService
 
     /**
      * @param int $id
-     * @return \Illuminate\Support\Collection|null
+     * @return Collection|null
      */
     public function userList(int $id) : ?Collection
     {
@@ -93,6 +95,49 @@ class ProjectsService
             $usersList = UserProjectRoleResolver::projectUsersList($project);
 
             return $usersList;
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return Collection|null
+     */
+    public function getAssignedUsers(int $id) : ?Collection
+    {
+        try
+        {
+            $project = Project::findOrFail($id);
+
+            $excludedUsers = UserProjectRoleResolver::projectUsersList($project)->pluck('id')->toArray();
+
+            return User::whereNotIn('id', $excludedUsers)->get();
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return ProjectUser|null
+     */
+    public function addAssignedUser(Request $request, int $id) : ?ProjectUser
+    {
+        try
+        {
+            $project = Project::findOrFail($id);
+
+            return ProjectUser::firstOrCreate([
+                'project_id' => $project->id,
+                'user_id' => $request->get('userId'),
+                'role' => $request->get('role'),
+            ]);
         }
         catch (ModelNotFoundException $e)
         {
