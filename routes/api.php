@@ -27,8 +27,12 @@ Route::middleware('auth:api')->namespace('Api')->group(function () {
     Route::apiResource('/projects', 'ProjectsController');
     Route::apiResource('/projects/{projectId}/issues', 'ProjectIssuesController');
     Route::apiResource('/issues', 'IssuesController');
+    Route::apiResource('/comments', 'CommentsController');
+    Route::apiResource('/files', 'FilesController');
 
     Route::get('/projects/{projectId}/userList', 'ProjectsController@getUserList');
     Route::get('/projects/{projectId}/assignedUsers', 'ProjectsController@getAssignedUsers');
     Route::post('/projects/{projectId}/assignedUsers', 'ProjectsController@postAssignedUsers');
+    Route::get('/issues/{issueId}/comments', 'IssueCommentsController@getIssueComments');
+    Route::post('/issues/{issueId}/comments', 'IssueCommentsController@addIssueComment');
 });

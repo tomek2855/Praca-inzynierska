@@ -4,12 +4,17 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('./bootstrap')
 require('./routes')
 
-window.Vue = require('vue');
+window.Vue = require('vue')
 
 import VueRouter from 'vue-router'
+import VuejsDialog from 'vuejs-dialog'
+import VuejsDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
+import 'vuejs-dialog/dist/vuejs-dialog.min.css'
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,6 +34,8 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  */
 
 Vue.use(VueRouter)
+Vue.use(VuejsDialog)
+Vue.use(Loading)
 Vue.component('pagination', require('laravel-vue-pagination'))
 
 const app = new Vue({

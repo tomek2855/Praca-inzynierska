@@ -33,6 +33,22 @@ class Comment extends Model implements AuditableInterface
      */
     public function issue()
     {
-        return $this->hasOne(Issue::class);
+        return $this->hasOne(Issue::class, 'id', 'issue_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function file()
+    {
+        return $this->hasOne(File::class, 'id', 'file_id');
     }
 }

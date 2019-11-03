@@ -38,4 +38,15 @@ class File extends Model implements AuditableInterface
 
         return parent::delete();
     }
+
+    /**
+     * @return string
+     */
+    public function getFullFilePath() : string
+    {
+        $path = config('filesystems.disks')[$this->driver]['root'];
+        $path .= '/' . $this->path;
+
+        return $path;
+    }
 }

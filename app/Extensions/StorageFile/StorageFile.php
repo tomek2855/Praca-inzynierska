@@ -34,6 +34,7 @@ class StorageFile
         $file->driver = $this->driver;
         $file->path = $filePath;
         $file->filename = basename($filePath);
+        $file->original_filename = $uploadedFile->getClientOriginalName();
         $file->mime_type = $uploadedFile->getClientMimeType();
         $file->save();
 

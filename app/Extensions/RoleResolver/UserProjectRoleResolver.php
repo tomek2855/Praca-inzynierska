@@ -5,6 +5,7 @@ namespace App\Extensions\RoleResolver;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class UserProjectRoleResolver
@@ -21,12 +22,18 @@ class UserProjectRoleResolver
     const USER_CAN_EDIT_COMMENT = 7;
     const USER_CAN_DELETE_COMMENT = 8;
 
-    public static function userHasAccessTo(User $user, ?Project $project, int $role) : bool
+    /**
+     * @param User $user
+     * @param Model|null $model
+     * @param int $role
+     * @return bool
+     */
+    public static function userHasAccessTo(User $user, ?Model $model, int $role) : bool
     {
         $projectUser = null;
-        if ($project)
+        if ($model && $model instanceof Project)
         {
-            $projectUser = ProjectUser::where('user_id', $user->id)->where('project_id', $project->id)->first();
+            $projectUser = ProjectUser::where('user_id', $user->id)->where('project_id', $model->id)->first();
         }
 
         switch ($role)

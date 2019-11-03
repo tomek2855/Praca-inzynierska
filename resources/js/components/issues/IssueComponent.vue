@@ -16,13 +16,15 @@
                 </div>
             </div>
         </div>
+
+        <comments-list-component :service="commentsService" :issue="issue"></comments-list-component>
     </div>
 </template>
 
 <script>
     export default {
         name: "issue-component",
-        props: ["service", "projectService"],
+        props: ["service", "projectService", "commentsService"],
         data() {
             return {
                 issue: {},

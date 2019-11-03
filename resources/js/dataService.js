@@ -30,7 +30,7 @@ class DataService {
     }
 
     delete(elem) {
-        return window.axios.delete(elem.id)
+        return window.axios.delete(this.path() + elem.id)
     }
 
     checkForToken() {
@@ -42,6 +42,30 @@ class DataService {
                 }, (error) => {console.log(error)}
             )
         }
+    }
+
+    uploadFile(file, params) {
+        let formData = new FormData()
+        formData.append('file', file)
+        formData.append('isPublic', params.isPublic)
+
+        return window.axios.post(this.basePath() + "files", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+    }
+
+    downloadFile(fileId) {
+        this.checkForToken()
+
+        return window.axios.get('/files/' + fileId).then(response => {
+            const blob = new Blob([response.data], { type: response.headers['content-type'] })
+            let link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = response.headers.filename
+            link.click()
+        })
     }
 }
 

@@ -14,6 +14,7 @@ import IssueAddComponent from './components/issues/IssueAddComponent'
 import AuthService from './components/auth/service'
 import ProjectsService from './components/projects/service'
 import IssuesService from './components/issues/service'
+import CommentsService from './components/comments/service'
 
 window.router = new VueRouter({
     mode: "history",
@@ -93,7 +94,8 @@ window.router = new VueRouter({
             component: IssueComponent,
             props: {
                 service: IssuesService,
-                projectService: ProjectsService
+                projectService: ProjectsService,
+                commentsService: CommentsService,
             }
         }
     ]

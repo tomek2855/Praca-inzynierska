@@ -33,7 +33,7 @@ class Issue extends Model implements AuditableInterface
      */
     public function project()
     {
-        return $this->hasOne(Project::class);
+        return $this->hasOne(Project::class, 'id', 'project_id');
     }
 
     /**

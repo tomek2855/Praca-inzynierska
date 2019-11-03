@@ -13,6 +13,8 @@
 
 //Auth::routes();
 
+Route::get('/files/{fileId}/{height?}/{weight?}', 'FilesController@download');
+
 Route::get('{all}', 'HomeController@index')->where('all', '.*');
 
 //Route::middleware('auth')->group(function () {
