@@ -59,4 +59,13 @@ class IssuesService
             return null;
         }
     }
+
+    /**
+     * @param int $issueId
+     * @return int
+     */
+    public function destroy(int $issueId) : int
+    {
+        return Issue::where('id', $issueId)->firstOrFail()->delete();
+    }
 }

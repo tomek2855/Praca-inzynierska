@@ -41,6 +41,6 @@ class Issue extends Model implements AuditableInterface
      */
     public function assignedUser()
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(User::class, 'id', 'assigned_user_id');
     }
 }

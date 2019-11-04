@@ -86,14 +86,4 @@ class ProjectIssuesController extends Controller
 
         return Response::create('', Response::HTTP_NOT_FOUND);
     }
-
-    /**
-     * @param $projectId
-     * @param $issueId
-     * @return Response
-     */
-    public function destroy($projectId, $issueId)
-    {
-        return Response::create($this->projectIssuesService->destroy($projectId, $issueId));
-    }
 }

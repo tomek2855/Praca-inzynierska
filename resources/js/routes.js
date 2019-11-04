@@ -89,6 +89,14 @@ window.router = new VueRouter({
             }
         },
         {
+            path: "/projects/:projectId/issues/edit/:id",
+            name: "projects.issues.edit",
+            component: IssueAddComponent,
+            props: {
+                service: IssuesService
+            }
+        },
+        {
             path: "/projects/:projectId/issues/:id",
             name: "issues.show",
             component: IssueComponent,

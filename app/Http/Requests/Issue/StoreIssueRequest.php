@@ -26,8 +26,18 @@ class StoreIssueRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
+            'title' => 'required|string|min:5',
             'content' => 'required|string|min:5',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title.min' => 'Nazwa zadania musi mieć co najmniej 5 znaków',
+            'title.required' => 'Nazwa zadania jest wymagana',
+            'content.min' => 'Opis musi mieć co najmniej 5 znaków',
+            'content.required' => 'Opis jest wymagany',
         ];
     }
 }

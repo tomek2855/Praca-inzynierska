@@ -17,6 +17,8 @@
             </div>
         </div>
 
+        <span v-if="error" class="error">{{ error }}</span>
+
         <comments-list-component :service="commentsService" :issue="issue"></comments-list-component>
     </div>
 </template>
@@ -31,32 +33,45 @@
                 userList: [],
                 error: "",
 
-                menu: [{ name: "Powrót", link: { name: "projects.issues", params: { projectId: this.$route.params.projectId } } }]
+                menu: [
+                    { name: "Powrót", link: { name: "projects.issues", params: { projectId: this.$route.params.projectId } } },
+                    { name: "Edytuj zadanie", link: { name: "projects.issues.edit", params: { issueId: this.$route.params.id } } }
+                ]
             }
         },
         mounted() {
+            let loader = this.$loading.show()
+
             this.service.show(this.$route.params.id).then(response => {
                 this.issue = response.data
             }).catch(error => {
                 this.error = error
+            }).finally(() => {
+                loader.hide()
             })
 
             this.projectService.getUserList(this.$route.params.projectId).then(response => {
                 this.userList = response.data
             }).catch(error => {
                 this.error = error
+            }).finally(() => {
+                loader.hide()
             })
         },
         methods: {
             userChanged() {
-                this.service.save(this.issue)
+                let loader = this.$loading.show()
+
+                this.service.save(this.issue).finally(() => {
+                    loader.hide()
+                })
             }
         }
     }
 </script>
 
 <style scoped>
-    span {
+    .error {
         color: red;
     }
 </style>

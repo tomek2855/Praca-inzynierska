@@ -2358,34 +2358,110 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "issue-add-component",
   props: ["service"],
   data: function data() {
     return {
-      issueName: "",
-      issueContent: "",
-      error: ""
+      error: "",
+      issue: {}
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    var loader = this.$loading.show();
+
+    if (this.$route.params.id) {
+      this.service.show(this.$route.params.id).then(function (response) {
+        _this.issue = response.data;
+      })["finally"](function () {
+        loader.hide();
+      });
+    } else {
+      loader.hide();
+    }
   },
   methods: {
     addIssue: function addIssue() {
-      var _this = this;
+      var _this2 = this;
 
-      this.service.addProjectIssue(this.$route.params.projectId, {
-        title: this.issueName,
-        content: this.issueContent
-      }).then(function (response) {
-        _this.$router.push({
-          name: "issues.show",
-          params: {
-            projectId: _this.$route.params.projectId,
-            id: response.data.id
+      var loader = this.$loading.show();
+
+      if (this.$route.params.id) {
+        this.service.save(this.issue).then(function (response) {
+          _this2.$router.push({
+            name: "issues.show",
+            params: {
+              projectId: _this2.$route.params.projectId,
+              id: response.data.id
+            }
+          });
+        })["catch"](function (error) {
+          _this2.error = "";
+
+          if (error.response.data.errors.content.length > 0) {
+            error.response.data.errors.content.forEach(function (item) {
+              _this2.error += item;
+            });
           }
+
+          if (error.response.data.errors.title.length > 0) {
+            error.response.data.errors.title.forEach(function (item) {
+              _this2.error += item;
+            });
+          }
+        })["finally"](function () {
+          loader.hide();
         });
-      })["catch"](function (error) {
-        _this.error = error;
-      });
+      } else {
+        this.service.addProjectIssue(this.$route.params.projectId, {
+          title: this.issue.title,
+          content: this.issue.content
+        }).then(function (response) {
+          _this2.$router.push({
+            name: "issues.show",
+            params: {
+              projectId: _this2.$route.params.projectId,
+              id: response.data.id
+            }
+          });
+        })["catch"](function (error) {
+          _this2.error = "";
+
+          if (error.response.data.errors.content.length > 0) {
+            error.response.data.errors.content.forEach(function (item) {
+              _this2.error += item;
+            });
+          }
+
+          if (error.response.data.errors.title.length > 0) {
+            error.response.data.errors.title.forEach(function (item) {
+              _this2.error += item;
+            });
+          }
+        })["finally"](function () {
+          loader.hide();
+        });
+      }
+    },
+    deleteIssue: function deleteIssue() {
+      var _this3 = this;
+
+      if (this.issue.id) {
+        var loader = this.$loading.show();
+        this.service["delete"](this.issue)["finally"](function () {
+          loader.hide();
+
+          _this3.$router.push({
+            name: "projects.issues",
+            params: {
+              projectId: _this3.$route.params.projectId
+            }
+          });
+        });
+      }
     }
   }
 });
@@ -2401,6 +2477,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -2440,26 +2518,42 @@ __webpack_require__.r(__webpack_exports__);
             projectId: this.$route.params.projectId
           }
         }
+      }, {
+        name: "Edytuj zadanie",
+        link: {
+          name: "projects.issues.edit",
+          params: {
+            issueId: this.$route.params.id
+          }
+        }
       }]
     };
   },
   mounted: function mounted() {
     var _this = this;
 
+    var loader = this.$loading.show();
     this.service.show(this.$route.params.id).then(function (response) {
       _this.issue = response.data;
     })["catch"](function (error) {
       _this.error = error;
+    })["finally"](function () {
+      loader.hide();
     });
     this.projectService.getUserList(this.$route.params.projectId).then(function (response) {
       _this.userList = response.data;
     })["catch"](function (error) {
       _this.error = error;
+    })["finally"](function () {
+      loader.hide();
     });
   },
   methods: {
     userChanged: function userChanged() {
-      this.service.save(this.issue);
+      var loader = this.$loading.show();
+      this.service.save(this.issue)["finally"](function () {
+        loader.hide();
+      });
     }
   }
 });
@@ -8310,7 +8404,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nspan[data-v-eb043b04] {\n    color: red;\n}\n", ""]);
+exports.push([module.i, "\n.error[data-v-eb043b04] {\n    color: red;\n}\n", ""]);
 
 // exports
 
@@ -41567,7 +41661,7 @@ var render = function() {
       _c("bar-component", { attrs: { title: "Dodaj zadanie" } }),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-lg-6" }, [
+        _c("div", { staticClass: "col-lg-9" }, [
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "name" } }, [_vm._v("Nazwa zadania")]),
             _vm._v(" "),
@@ -41576,19 +41670,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.issueName,
-                  expression: "issueName"
+                  value: _vm.issue.title,
+                  expression: "issue.title"
                 }
               ],
               staticClass: "form-control",
               attrs: { id: "name", type: "text" },
-              domProps: { value: _vm.issueName },
+              domProps: { value: _vm.issue.title },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.issueName = $event.target.value
+                  _vm.$set(_vm.issue, "title", $event.target.value)
                 }
               }
             })
@@ -41604,19 +41698,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.issueContent,
-                  expression: "issueContent"
+                  value: _vm.issue.content,
+                  expression: "issue.content"
                 }
               ],
               staticClass: "form-control",
-              attrs: { id: "content", cols: "30", rows: "10" },
-              domProps: { value: _vm.issueContent },
+              attrs: { id: "content", rows: "5" },
+              domProps: { value: _vm.issue.content },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.issueContent = $event.target.value
+                  _vm.$set(_vm.issue, "content", $event.target.value)
                 }
               }
             })
@@ -41625,7 +41719,24 @@ var render = function() {
           _c(
             "button",
             { staticClass: "btn btn-primary", on: { click: _vm.addIssue } },
-            [_vm._v("Dodaj")]
+            [_vm._v("Zapisz")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: this.$route.params.id,
+                  expression: "this.$route.params.id"
+                }
+              ],
+              staticClass: "btn btn-danger",
+              on: { click: _vm.deleteIssue }
+            },
+            [_vm._v("Usuń zadanie")]
           ),
           _vm._v(" "),
           _vm.error ? _c("span", [_vm._v(_vm._s(_vm.error))]) : _vm._e()
@@ -41726,6 +41837,10 @@ var render = function() {
           ])
         ])
       ]),
+      _vm._v(" "),
+      _vm.error
+        ? _c("span", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))])
+        : _vm._e(),
       _vm._v(" "),
       _c("comments-list-component", {
         attrs: { service: _vm.commentsService, issue: _vm.issue }
@@ -60398,6 +60513,13 @@ window.router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   }, {
     path: "/projects/:projectId/issues/add",
     name: "projects.issues.add",
+    component: _components_issues_IssueAddComponent__WEBPACK_IMPORTED_MODULE_10__["default"],
+    props: {
+      service: _components_issues_service__WEBPACK_IMPORTED_MODULE_13__["default"]
+    }
+  }, {
+    path: "/projects/:projectId/issues/edit/:id",
+    name: "projects.issues.edit",
     component: _components_issues_IssueAddComponent__WEBPACK_IMPORTED_MODULE_10__["default"],
     props: {
       service: _components_issues_service__WEBPACK_IMPORTED_MODULE_13__["default"]

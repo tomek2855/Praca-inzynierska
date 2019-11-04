@@ -67,4 +67,13 @@ class IssuesController extends Controller
 
         return Response::create('', Response::HTTP_NOT_FOUND);
     }
+
+    /**
+     * @param $issueId
+     * @return Response
+     */
+    public function destroy($issueId)
+    {
+        return Response::create($this->issuesService->destroy($issueId));
+    }
 }

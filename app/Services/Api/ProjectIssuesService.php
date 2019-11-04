@@ -89,15 +89,4 @@ class ProjectIssuesService
             return null;
         }
     }
-
-
-    /**
-     * @param int $projectId
-     * @param int $issueId
-     * @return int
-     */
-    public function destroy(int $projectId, int $issueId) : int
-    {
-        return Issue::where('project_id', $projectId)->where('id', $issueId)->firstOrFail()->delete();
-    }
 }
