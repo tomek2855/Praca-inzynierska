@@ -24,8 +24,21 @@ class StoreProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
+            'title' => 'required|string|min:5',
             'content' => 'required|string|min:5',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.min' => 'Nazwa projektu musi mieć co najmniej 5 znaków',
+            'title.required' => 'Nazwa projektu jest wymagana',
+            'content.min' => 'Opis projektu musi mieć co najmniej 5 znaków',
+            'content.required' => 'Opis projektu jest wymagany',
         ];
     }
 }

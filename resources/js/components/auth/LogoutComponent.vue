@@ -14,6 +14,8 @@
             }
         },
         mounted() {
+            let loader = this.$loading.show()
+
             this.service.logout().then(response => {
                 localStorage.removeItem("token")
                 this.refreshNavBar()
@@ -21,6 +23,8 @@
             }).catch(error => {
                 localStorage.removeItem("token")
                 this.error = error
+            }).finally(() => {
+                loader.hide()
             })
         },
         methods: {

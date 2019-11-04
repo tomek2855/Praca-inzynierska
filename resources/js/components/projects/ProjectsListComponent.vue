@@ -20,7 +20,7 @@
                 projects: {},
                 query: "",
                 error: "",
-                tableHead: [{id: "id", name: "#"}, {id: "title", name: "Projekt"}, {id: "updated_at", name: "Data modyfikacji"}],
+                tableHead: [{id: "id", name: "#", class: "bold center w-3"}, {id: "title", name: "Projekt"}, {id: "updated_at", name: "Data modyfikacji", class: "w-20"}],
                 tableLink: { name: "projects.show", params: { id: "id" } },
 
                 menu: [{ name: "Dodaj projekt", link: { name: "projects.add" } }]

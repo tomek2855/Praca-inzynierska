@@ -1,14 +1,14 @@
 <template>
     <div>
-        <table v-if="data.length" class="table table-sm table-bordered table-hover">
-            <thead>
+        <table v-if="data.length" class="table table-bordered table-hover">
+            <thead class="thead-light">
                 <tr>
-                    <th v-for="item in head">{{ item.name }}</th>
+                    <th v-for="item in head" v-bind:class="item.class">{{ item.name }}</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-striped">
                 <tr v-for="dataItem in data" @click="loadRow(dataItem)">
-                    <td v-for="item in head">{{ dataItem[item.id] }}</td>
+                    <td v-for="item in head" v-bind:class="item.class" v-text="getDataItem(dataItem, item.id)"></td>
                 </tr>
             </tbody>
         </table>
@@ -32,6 +32,9 @@
                 })
 
                 this.$router.push({ name: this.links.name, params: params })
+            },
+            getDataItem(dataItem, id) {
+                return id.split('.').reduce((a, b) => a[b] ? a[b] : "", dataItem)
             }
         }
     }
@@ -40,5 +43,11 @@
 <style scoped>
     span {
         color: #284257;
+    }
+    .bold {
+        font-weight: bold;
+    }
+    .center {
+        text-align: center;
     }
 </style>

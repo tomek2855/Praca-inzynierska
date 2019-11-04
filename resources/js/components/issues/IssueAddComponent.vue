@@ -94,12 +94,16 @@
 
             deleteIssue() {
                 if (this.issue.id) {
-                    let loader = this.$loading.show()
+                    this.$dialog
+                        .confirm('Na pewno usunąć komentarz?', {okText: "Tak", cancelText: "Nie"})
+                        .then(() => {
+                            let loader = this.$loading.show()
 
-                    this.service.delete(this.issue).finally(() => {
-                        loader.hide()
-                        this.$router.push({ name: "projects.issues", params: { projectId: this.$route.params.projectId } })
-                    })
+                            this.service.delete(this.issue).finally(() => {
+                                loader.hide()
+                                this.$router.push({ name: "projects.issues", params: { projectId: this.$route.params.projectId } })
+                            })
+                        })
                 }
             }
         }

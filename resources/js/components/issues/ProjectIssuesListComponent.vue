@@ -21,7 +21,7 @@
                 error: "",
                 query: "",
 
-                tableHead: [{id: "id", name: "#"}, {id: "title", name: "Zadanie"}, {id: "updated_at", name: "Data modyfikacji"}],
+                tableHead: [{id: "id", name: "#", class: "bold center w-3"}, {id: "title", name: "Zadanie"}, {id: "assigned_user.name", name: "Przypisane do", class: "w-30"}, {id: "updated_at", name: "Data modyfikacji", class: "w-20"}],
                 tableLink: { name: "issues.show", params: { id: "id", projectId: "project_id" } },
                 menu: [
                     {name: "Dodaj zadanie", link: {name: "projects.issues.add", params: {projectId: this.$route.params.projectId}}},
@@ -39,6 +39,8 @@
                 this.getResults()
             },
             getResults(page = 1) {
+                let loader = this.$loading.show()
+
                 this.service.getProjectIssues(this.$route.params.projectId, {
                     params: {
                         page: page,
@@ -49,6 +51,8 @@
                     this.issues = response.data.data
                 }).catch(error => {
                     this.error = error
+                }).finally(() => {
+                    loader.hide()
                 })
             }
         }

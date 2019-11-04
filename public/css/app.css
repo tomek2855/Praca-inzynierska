@@ -10648,3 +10648,23 @@ a.text-dark:focus {
   color: red;
 }
 
+.w-3 {
+  width: 3%;
+}
+
+.w-5 {
+  width: 5%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-20 {
+  width: 20%;
+}
+
+.w-30 {
+  width: 30%;
+}
+

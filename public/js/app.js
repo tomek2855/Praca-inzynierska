@@ -1889,6 +1889,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "home-component"
 });
@@ -2007,6 +2008,11 @@ __webpack_require__.r(__webpack_exports__);
         name: this.links.name,
         params: params
       });
+    },
+    getDataItem: function getDataItem(dataItem, id) {
+      return id.split('.').reduce(function (a, b) {
+        return a[b] ? a[b] : "";
+      }, dataItem);
     }
   }
 });
@@ -2062,6 +2068,7 @@ __webpack_require__.r(__webpack_exports__);
     sendLogin: function sendLogin() {
       var _this = this;
 
+      var loader = this.$loading.show();
       this.service.login({
         user: this.login,
         password: this.password
@@ -2075,6 +2082,8 @@ __webpack_require__.r(__webpack_exports__);
         });
       })["catch"](function (error) {
         _this.error = error;
+      })["finally"](function () {
+        loader.hide();
       });
     },
     refreshNavBar: function refreshNavBar() {
@@ -2111,6 +2120,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
+    var loader = this.$loading.show();
     this.service.logout().then(function (response) {
       localStorage.removeItem("token");
 
@@ -2122,6 +2132,8 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {
       localStorage.removeItem("token");
       _this.error = error;
+    })["finally"](function () {
+      loader.hide();
     });
   },
   methods: {
@@ -2450,15 +2462,21 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       if (this.issue.id) {
-        var loader = this.$loading.show();
-        this.service["delete"](this.issue)["finally"](function () {
-          loader.hide();
+        this.$dialog.confirm('Na pewno usunąć komentarz?', {
+          okText: "Tak",
+          cancelText: "Nie"
+        }).then(function () {
+          var loader = _this3.$loading.show();
 
-          _this3.$router.push({
-            name: "projects.issues",
-            params: {
-              projectId: _this3.$route.params.projectId
-            }
+          _this3.service["delete"](_this3.issue)["finally"](function () {
+            loader.hide();
+
+            _this3.$router.push({
+              name: "projects.issues",
+              params: {
+                projectId: _this3.$route.params.projectId
+              }
+            });
           });
         });
       }
@@ -2592,13 +2610,15 @@ __webpack_require__.r(__webpack_exports__);
       error: "",
       tableHead: [{
         id: "id",
-        name: "#"
+        name: "#",
+        "class": "bold center w-3"
       }, {
         id: "title",
         name: "Zadanie"
       }, {
         id: "updated_at",
-        name: "Data modyfikacji"
+        name: "Data modyfikacji",
+        "class": "w-20"
       }],
       tableLink: {
         name: "issues.show",
@@ -2617,6 +2637,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var loader = this.$loading.show();
       this.service.get({
         params: {
           page: page,
@@ -2627,6 +2648,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.issues = response.data.data;
       })["catch"](function (error) {
         _this.error = error;
+      })["finally"](function () {
+        loader.hide();
       });
     },
     searchClicked: function searchClicked(query) {
@@ -2670,13 +2693,19 @@ __webpack_require__.r(__webpack_exports__);
       query: "",
       tableHead: [{
         id: "id",
-        name: "#"
+        name: "#",
+        "class": "bold center w-3"
       }, {
         id: "title",
         name: "Zadanie"
       }, {
+        id: "assigned_user.name",
+        name: "Przypisane do",
+        "class": "w-30"
+      }, {
         id: "updated_at",
-        name: "Data modyfikacji"
+        name: "Data modyfikacji",
+        "class": "w-20"
       }],
       tableLink: {
         name: "issues.show",
@@ -2724,6 +2753,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var loader = this.$loading.show();
       this.service.getProjectIssues(this.$route.params.projectId, {
         params: {
           page: page,
@@ -2734,6 +2764,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.issues = response.data.data;
       })["catch"](function (error) {
         _this.error = error;
+      })["finally"](function () {
+        loader.hide();
       });
     }
   }
@@ -3567,6 +3599,7 @@ __webpack_require__.r(__webpack_exports__);
     addProject: function addProject() {
       var _this = this;
 
+      var loader = this.$loading.show();
       this.service.save({
         title: this.projectName,
         content: this.projectContent
@@ -3578,7 +3611,21 @@ __webpack_require__.r(__webpack_exports__);
           }
         });
       })["catch"](function (error) {
-        _this.error = error;
+        _this.error = "";
+
+        if (error.response.data.errors.content.length > 0) {
+          error.response.data.errors.content.forEach(function (item) {
+            _this.error += item;
+          });
+        }
+
+        if (error.response.data.errors.title.length > 0) {
+          error.response.data.errors.title.forEach(function (item) {
+            _this.error += item;
+          });
+        }
+      })["finally"](function () {
+        loader.hide();
       });
     }
   }
@@ -3725,13 +3772,15 @@ __webpack_require__.r(__webpack_exports__);
       error: "",
       tableHead: [{
         id: "id",
-        name: "#"
+        name: "#",
+        "class": "bold center w-3"
       }, {
         id: "title",
         name: "Projekt"
       }, {
         id: "updated_at",
-        name: "Data modyfikacji"
+        name: "Data modyfikacji",
+        "class": "w-20"
       }],
       tableLink: {
         name: "projects.show",
@@ -8309,7 +8358,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nspan[data-v-8554570c] {\n    color: #284257;\n}\n", ""]);
+exports.push([module.i, "\nspan[data-v-8554570c] {\n    color: #284257;\n}\n.bold[data-v-8554570c] {\n    font-weight: bold;\n}\n.center[data-v-8554570c] {\n    text-align: center;\n}\n", ""]);
 
 // exports
 
@@ -41136,6 +41185,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "container" }, [
       _vm._v("\n    Aplikacja webowa do zarządzania projektami.\n\n    "),
+      _c("pre", [_vm._v("dr. Adam Mazurkiewicz")]),
+      _vm._v(" "),
       _c("pre", [_vm._v("Tomasz Przybyło")])
     ])
   }
@@ -41207,42 +41258,46 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _vm.data.length
-      ? _c(
-          "table",
-          { staticClass: "table table-sm table-bordered table-hover" },
-          [
-            _c("thead", [
-              _c(
-                "tr",
-                _vm._l(_vm.head, function(item) {
-                  return _c("th", [_vm._v(_vm._s(item.name))])
-                }),
-                0
-              )
-            ]),
-            _vm._v(" "),
+      ? _c("table", { staticClass: "table table-bordered table-hover" }, [
+          _c("thead", { staticClass: "thead-light" }, [
             _c(
-              "tbody",
-              _vm._l(_vm.data, function(dataItem) {
-                return _c(
-                  "tr",
-                  {
-                    on: {
-                      click: function($event) {
-                        return _vm.loadRow(dataItem)
-                      }
-                    }
-                  },
-                  _vm._l(_vm.head, function(item) {
-                    return _c("td", [_vm._v(_vm._s(dataItem[item.id]))])
-                  }),
-                  0
-                )
+              "tr",
+              _vm._l(_vm.head, function(item) {
+                return _c("th", { class: item.class }, [
+                  _vm._v(_vm._s(item.name))
+                ])
               }),
               0
             )
-          ]
-        )
+          ]),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            { staticClass: "table-striped" },
+            _vm._l(_vm.data, function(dataItem) {
+              return _c(
+                "tr",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.loadRow(dataItem)
+                    }
+                  }
+                },
+                _vm._l(_vm.head, function(item) {
+                  return _c("td", {
+                    class: item.class,
+                    domProps: {
+                      textContent: _vm._s(_vm.getDataItem(dataItem, item.id))
+                    }
+                  })
+                }),
+                0
+              )
+            }),
+            0
+          )
+        ])
       : _c("div", [_c("span", [_vm._v("Ładowanie danych")])])
   ])
 }
@@ -43040,7 +43095,7 @@ var render = function() {
       _c("bar-component", { attrs: { title: "Dodaj projekt" } }),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-lg-6" }, [
+        _c("div", { staticClass: "col-lg-9" }, [
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "name" } }, [_vm._v("Nazwa projektu")]),
             _vm._v(" "),
@@ -43082,7 +43137,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control",
-              attrs: { id: "content", cols: "30", rows: "10" },
+              attrs: { id: "content", rows: "5" },
               domProps: { value: _vm.projectContent },
               on: {
                 input: function($event) {
@@ -43098,7 +43153,7 @@ var render = function() {
           _c(
             "button",
             { staticClass: "btn btn-primary", on: { click: _vm.addProject } },
-            [_vm._v("Dodaj")]
+            [_vm._v("Zapisz")]
           ),
           _vm._v(" "),
           _vm.error ? _c("span", [_vm._v(_vm._s(_vm.error))]) : _vm._e()

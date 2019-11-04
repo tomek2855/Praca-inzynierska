@@ -3,16 +3,16 @@
         <bar-component :title="'Dodaj projekt'"></bar-component>
 
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-9">
                 <div class="form-group">
                     <label for="name">Nazwa projektu</label>
                     <input v-model="projectName" id="name" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="content">Opis projektu</label>
-                    <textarea v-model="projectContent" id="content" class="form-control" cols="30" rows="10"></textarea>
+                    <textarea v-model="projectContent" id="content" class="form-control" rows="5"></textarea>
                 </div>
-                <button v-on:click="addProject" class="btn btn-primary">Dodaj</button>
+                <button v-on:click="addProject" class="btn btn-primary">Zapisz</button>
 
                 <span v-if="error">{{ error }}</span>
             </div>
@@ -33,13 +33,28 @@
         },
         methods: {
             addProject() {
+                let loader = this.$loading.show()
+
                 this.service.save({
                     title: this.projectName,
                     content: this.projectContent
                 }).then(response => {
                     this.$router.push({ name: "projects.show", params: { id: response.data.id } })
                 }).catch(error => {
-                    this.error = error
+                    this.error = ""
+
+                    if (error.response.data.errors.content.length > 0) {
+                        error.response.data.errors.content.forEach(item => {
+                            this.error += item
+                        })
+                    }
+                    if (error.response.data.errors.title.length > 0) {
+                        error.response.data.errors.title.forEach(item => {
+                            this.error += item
+                        })
+                    }
+                }).finally(() => {
+                    loader.hide()
                 })
             }
         }

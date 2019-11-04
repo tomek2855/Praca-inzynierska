@@ -35,6 +35,8 @@
         },
         methods: {
             sendLogin() {
+                let loader = this.$loading.show()
+
                 this.service.login({
                     user: this.login,
                     password: this.password
@@ -44,6 +46,8 @@
                     this.$router.push({ name: "home" })
                 }).catch(error => {
                     this.error = error
+                }).finally(() => {
+                    loader.hide()
                 })
             },
             refreshNavBar() {

@@ -20,7 +20,7 @@
                 issues: {},
                 query: "",
                 error: "",
-                tableHead: [{id: "id", name: "#"}, {id: "title", name: "Zadanie"}, {id: "updated_at", name: "Data modyfikacji"}],
+                tableHead: [{id: "id", name: "#", class: "bold center w-3"}, {id: "title", name: "Zadanie"}, {id: "updated_at", name: "Data modyfikacji", class: "w-20"}],
                 tableLink: { name: "issues.show", params: { id: "id", projectId: "project_id" } },
             }
         },
@@ -29,6 +29,8 @@
         },
         methods: {
             getResults(page = 1) {
+                let loader = this.$loading.show()
+
                 this.service.get({
                     params: {
                         page: page,
@@ -39,6 +41,8 @@
                     this.issues = response.data.data
                 }).catch(error => {
                     this.error = error
+                }).finally(() => {
+                    loader.hide()
                 })
             },
             searchClicked(query) {
