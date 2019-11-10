@@ -2,21 +2,21 @@
     <div class="container">
         <bar-component :title="project.title" :menu="menu"></bar-component>
 
-        <blockquote>
-            <p>{{ project.content }}</p>
-        </blockquote>
+        <div class="row">
+            <div class="col-lg-9">
+                <blockquote>
+                    <p>{{ project.content }}</p>
+                </blockquote>
+            </div>
+            <div class="col-lg-3">
+                <h5>Uczestnicy projektu</h5>
+                <ul class="list-group list-group-flush">
+                    <li v-for="user in project.users" class="list-group-item">{{ user.name }}</li>
+                </ul>
+            </div>
+        </div>
 
-        <h5>Przypisani użytkownicy</h5>
-        <ul>
-            <li v-for="user in project.users">{{ user.name }}</li>
-        </ul>
-
-        <select v-model="newUser" @change="addUser" class="form-control">
-            <option value=""></option>
-            <option v-for="user in usersToAdd" v-bind:value="user.id">{{ user.name }}</option>
-        </select>
-
-        <span v-if="error">{{ error }}</span>
+        <span v-if="error" class="error">{{ error }}</span>
     </div>
 </template>
 
@@ -50,6 +50,10 @@
                     {
                         name: "Opis",
                         link: { name: "projects.show", params: { id: this.project.id } }
+                    },
+                    {
+                        name: "Edytuj projekt",
+                        link: { name: "projects.edit", params: { projectId: this.project.id } }
                     }
                 ]
             },
@@ -82,7 +86,7 @@
 </script>
 
 <style scoped>
-    span {
-        color: red;
+    .list-group-item {
+        padding: 0.5rem 1rem;
     }
 </style>

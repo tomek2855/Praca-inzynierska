@@ -13,6 +13,7 @@
                     <textarea v-model="issue.content" id="content" class="form-control" rows="5"></textarea>
                 </div>
                 <button v-on:click="addIssue" class="btn btn-primary">Zapisz</button>
+                <button v-on:click="$router.go(-1)" class="btn btn-warning">Wróć</button>
                 <button v-on:click="deleteIssue" v-show="this.$route.params.id" class="btn btn-danger">Usuń zadanie</button>
 
                 <span v-if="error">{{ error }}</span>

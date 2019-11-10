@@ -107,4 +107,14 @@ class ProjectsController extends Controller
     {
         return Response::create($this->projectsService->addAssignedUser($request, $id));
     }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function deleteAssignedUsers(Request $request, $id)
+    {
+        return Response::create($this->projectsService->deleteAssignedUser($request, $id));
+    }
 }

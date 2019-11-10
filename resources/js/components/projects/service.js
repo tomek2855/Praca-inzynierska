@@ -18,6 +18,10 @@ class Service extends DataService {
         return window.axios.post(this.path() + projectId + "/assignedUsers", params)
     }
 
+    deleteUserFromProject(projectId, params = null) {
+        return window.axios.delete(this.path() + projectId + "/assignedUsers", params);
+    }
+
 }
 
 export default new Service()

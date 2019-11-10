@@ -63,7 +63,7 @@ class ProjectsService
         try
         {
             $project = Project::findOrFail($id);
-            $project->update($request->all());
+            $project->update($request->only(['title', 'content']));
 
             return $project;
         }
@@ -142,6 +142,25 @@ class ProjectsService
         catch (ModelNotFoundException $e)
         {
             return null;
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return int
+     */
+    public function deleteAssignedUser(Request $request, int $id) : int
+    {
+        try
+        {
+            $project = Project::findOrFail($id);
+
+            return ProjectUser::where('project_id', $project->id)->where('user_id', $request->get('userId'))->delete() > 0;
+        }
+        catch (\Exception $e)
+        {
+            return 0;
         }
     }
 }

@@ -13,6 +13,7 @@
                     <textarea v-model="projectContent" id="content" class="form-control" rows="5"></textarea>
                 </div>
                 <button v-on:click="addProject" class="btn btn-primary">Zapisz</button>
+                <button v-on:click="$router.go(-1)" class="btn btn-warning">Wróć</button>
 
                 <span v-if="error">{{ error }}</span>
             </div>

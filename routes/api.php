@@ -33,6 +33,7 @@ Route::middleware('auth:api')->namespace('Api')->group(function () {
     Route::get('/projects/{projectId}/userList', 'ProjectsController@getUserList');
     Route::get('/projects/{projectId}/assignedUsers', 'ProjectsController@getAssignedUsers');
     Route::post('/projects/{projectId}/assignedUsers', 'ProjectsController@postAssignedUsers');
+    Route::delete('/projects/{projectId}/assignedUsers', 'ProjectsController@deleteAssignedUsers');
     Route::get('/issues/{issueId}/comments', 'IssueCommentsController@getIssueComments');
     Route::post('/issues/{issueId}/comments', 'IssueCommentsController@addIssueComment');
 });

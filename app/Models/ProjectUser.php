@@ -18,6 +18,11 @@ class ProjectUser extends Pivot implements AuditableInterface
     /**
      * @var array
      */
+    protected $primaryKey = ['project_id', 'user_id'];
+
+    /**
+     * @var array
+     */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

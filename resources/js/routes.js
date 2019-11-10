@@ -10,6 +10,7 @@ import IssuesListComponent from './components/issues/IssuesListComponent'
 import IssueComponent from './components/issues/IssueComponent'
 import ProjectIssuesListComponent from './components/issues/ProjectIssuesListComponent'
 import IssueAddComponent from './components/issues/IssueAddComponent'
+import ProjectEditComponent from './components/projects/ProjectEditComponent'
 
 import AuthService from './components/auth/service'
 import ProjectsService from './components/projects/service'
@@ -86,6 +87,14 @@ window.router = new VueRouter({
             component: IssueAddComponent,
             props: {
                 service: IssuesService
+            }
+        },
+        {
+            path: "/projects/:projectId/edit",
+            name: "projects.edit",
+            component: ProjectEditComponent,
+            props: {
+                service: ProjectsService
             }
         },
         {
