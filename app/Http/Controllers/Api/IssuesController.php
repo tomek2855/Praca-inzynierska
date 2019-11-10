@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Comment\UpdateCommentRequest;
+use App\Http\Requests\Issue\UpdateIssueRequest;
 use App\Services\Api\IssuesService;
 use App\Http\Controllers\Controller;
 use App\Services\Api\ProjectIssuesService;
@@ -52,11 +54,11 @@ class IssuesController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param UpdateIssueRequest $request
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateIssueRequest $request, int $id)
     {
         $result = $this->issuesService->update($request, $id);
 

@@ -23,15 +23,22 @@
                     <li v-for="user in project.users" class="list-group-item">
                         {{ user.name }}
                         <span v-on:click="deleteUser(user)" class="btn btn-sm btn-danger float-right">Usuń</span>
+                        <br>
+                        <small>{{ roles.find(item => {return item.id == user.pivot.role}).name }}</small>
                     </li>
                 </ul>
 
                 <div class="form-group" style="padding-top: 20px">
+                    <label for="newUserRole">Rola</label>
+                    <select v-model="newUser.role" id="newUserRole" class="form-control">
+                        <option v-for="role in roles" v-bind:value="role.id">{{ role.name }}</option>
+                    </select>
                     <label for="newUser">Dodaj użytkownika</label>
-                    <select v-model="newUser" @change="addUser" id="newUser" class="form-control">
+                    <select v-model="newUser.id" id="newUser" class="form-control">
                         <option value=""></option>
                         <option v-for="user in usersToAdd" v-bind:value="user.id">{{ user.name }}</option>
                     </select>
+                    <button @click="addUser" class="btn btn-success" style="margin-top: 10px">Dodaj</button>
                 </div>
             </div>
         </div>
@@ -47,7 +54,8 @@
                 project: {},
                 error: "",
                 usersToAdd: [],
-                newUser: {}
+                newUser: {},
+                roles: [{id: "PROJECT_MODERATOR", name: "Moderator"}, {id: "PROJECT_USER", name: "Użytkownik"}, {id: "PROJECT_READER", name: "Czytelnik"}]
             }
         },
         mounted() {
@@ -97,12 +105,24 @@
                 let loader = this.$loading.show()
 
                 this.service.addUserToProject(this.project.id, {
-                    userId: this.newUser,
-                    role: "PROJECT_USER"
+                    userId: this.newUser.id,
+                    role: this.newUser.role,
                 }).then(response => {
                     this.init()
+                    this.error = ""
                 }).catch(error => {
-                    this.error = error
+                    this.error = ""
+
+                    if (error.response.data.errors.role.length > 0) {
+                        error.response.data.errors.role.forEach(item => {
+                            this.error += item
+                        })
+                    }
+                    if (error.response.data.errors.userId.length > 0) {
+                        error.response.data.errors.userId.forEach(item => {
+                            this.error += item
+                        })
+                    }
                 }).finally(() => {
                     loader.hide()
                 })
@@ -119,6 +139,7 @@
                             }
                         }).then(response => {
                             this.init()
+                            this.error = ""
                         }).catch(error => {
                             this.error = error
                         }).finally(() => {

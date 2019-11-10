@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Issue\StoreIssueRequest;
+use App\Http\Requests\Issue\UpdateIssueRequest;
 use App\Services\Api\ProjectIssuesService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -70,12 +71,12 @@ class ProjectIssuesController extends Controller
     }
 
     /**
-     * @param StoreIssueRequest $request
+     * @param UpdateIssueRequest $request
      * @param $projectId
      * @param $issueId
      * @return Response
      */
-    public function update(StoreIssueRequest $request, $projectId, $issueId)
+    public function update(UpdateIssueRequest $request, $projectId, $issueId)
     {
         $result = $this->projectIssuesService->update($request, $projectId, $issueId);
 

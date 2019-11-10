@@ -3,6 +3,7 @@
 namespace App\Services\Api;
 
 use App\Models\Issue;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

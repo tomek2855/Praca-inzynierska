@@ -3799,6 +3799,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "project-edit-component",
   props: ["service"],
@@ -3807,7 +3814,17 @@ __webpack_require__.r(__webpack_exports__);
       project: {},
       error: "",
       usersToAdd: [],
-      newUser: {}
+      newUser: {},
+      roles: [{
+        id: "PROJECT_MODERATOR",
+        name: "Moderator"
+      }, {
+        id: "PROJECT_USER",
+        name: "Użytkownik"
+      }, {
+        id: "PROJECT_READER",
+        name: "Czytelnik"
+      }]
     };
   },
   mounted: function mounted() {
@@ -3865,12 +3882,26 @@ __webpack_require__.r(__webpack_exports__);
 
       var loader = this.$loading.show();
       this.service.addUserToProject(this.project.id, {
-        userId: this.newUser,
-        role: "PROJECT_USER"
+        userId: this.newUser.id,
+        role: this.newUser.role
       }).then(function (response) {
         _this3.init();
+
+        _this3.error = "";
       })["catch"](function (error) {
-        _this3.error = error;
+        _this3.error = "";
+
+        if (error.response.data.errors.role.length > 0) {
+          error.response.data.errors.role.forEach(function (item) {
+            _this3.error += item;
+          });
+        }
+
+        if (error.response.data.errors.userId.length > 0) {
+          error.response.data.errors.userId.forEach(function (item) {
+            _this3.error += item;
+          });
+        }
       })["finally"](function () {
         loader.hide();
       });
@@ -3890,6 +3921,8 @@ __webpack_require__.r(__webpack_exports__);
           }
         }).then(function (response) {
           _this4.init();
+
+          _this4.error = "";
         })["catch"](function (error) {
           _this4.error = error;
         })["finally"](function () {
@@ -43590,7 +43623,19 @@ var render = function() {
                     }
                   },
                   [_vm._v("Usuń")]
-                )
+                ),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c("small", [
+                  _vm._v(
+                    _vm._s(
+                      _vm.roles.find(function(item) {
+                        return item.id == user.pivot.role
+                      }).name
+                    )
+                  )
+                ])
               ])
             }),
             0
@@ -43603,6 +43648,49 @@ var render = function() {
               staticStyle: { "padding-top": "20px" }
             },
             [
+              _c("label", { attrs: { for: "newUserRole" } }, [_vm._v("Rola")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newUser.role,
+                      expression: "newUser.role"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { id: "newUserRole" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.newUser,
+                        "role",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                _vm._l(_vm.roles, function(role) {
+                  return _c("option", { domProps: { value: role.id } }, [
+                    _vm._v(_vm._s(role.name))
+                  ])
+                }),
+                0
+              ),
+              _vm._v(" "),
               _c("label", { attrs: { for: "newUser" } }, [
                 _vm._v("Dodaj użytkownika")
               ]),
@@ -43614,29 +43702,30 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.newUser,
-                      expression: "newUser"
+                      value: _vm.newUser.id,
+                      expression: "newUser.id"
                     }
                   ],
                   staticClass: "form-control",
                   attrs: { id: "newUser" },
                   on: {
-                    change: [
-                      function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.newUser = $event.target.multiple
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.newUser,
+                        "id",
+                        $event.target.multiple
                           ? $$selectedVal
                           : $$selectedVal[0]
-                      },
-                      _vm.addUser
-                    ]
+                      )
+                    }
                   }
                 },
                 [
@@ -43649,6 +43738,16 @@ var render = function() {
                   })
                 ],
                 2
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  staticStyle: { "margin-top": "10px" },
+                  on: { click: _vm.addUser }
+                },
+                [_vm._v("Dodaj")]
               )
             ]
           )

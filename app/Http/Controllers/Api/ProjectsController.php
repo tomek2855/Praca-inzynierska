@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Project\AddUserToProjectRequest;
+use App\Http\Requests\Project\DeleteUserToProjectRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
+use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Services\Api\ProjectsService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectsController extends Controller
 {
@@ -55,11 +57,11 @@ class ProjectsController extends Controller
     }
 
     /**
-     * @param StoreProjectRequest $request
+     * @param UpdateProjectRequest $request
      * @param $id
      * @return Response
      */
-    public function update(StoreProjectRequest $request, $id)
+    public function update(UpdateProjectRequest $request, $id)
     {
         $result = $this->projectsService->update($request, $id);
 
@@ -99,21 +101,21 @@ class ProjectsController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param AddUserToProjectRequest $request
      * @param $id
      * @return Response
      */
-    public function postAssignedUsers(Request $request, $id)
+    public function postAssignedUsers(AddUserToProjectRequest $request, $id)
     {
         return Response::create($this->projectsService->addAssignedUser($request, $id));
     }
 
     /**
-     * @param Request $request
+     * @param DeleteUserToProjectRequest $request
      * @param $id
      * @return Response
      */
-    public function deleteAssignedUsers(Request $request, $id)
+    public function deleteAssignedUsers(DeleteUserToProjectRequest $request, $id)
     {
         return Response::create($this->projectsService->deleteAssignedUser($request, $id));
     }
