@@ -44,6 +44,10 @@ class DataService {
         }
     }
 
+    getUser() {
+        return window.axios.get(this.basePath() + "user")
+    }
+
     uploadFile(file, params) {
         let formData = new FormData()
         formData.append('file', file)

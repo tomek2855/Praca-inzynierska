@@ -27,10 +27,10 @@ class AuthController extends Controller
                 return Response::create(['token' => $token], Response::HTTP_OK);
             }
 
-            return Response::create(['message' => 'Password is wrong'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return Response::create(['message' => 'Hasło jest nieprawidłowe'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return Response::create(['message' => 'User not exists'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        return Response::create(['message' => 'Ten użytkownik nie istnieje'], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**

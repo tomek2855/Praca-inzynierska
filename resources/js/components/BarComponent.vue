@@ -3,7 +3,7 @@
         <div class="title">{{ title }}</div>
         <div>
             <ul class="nav">
-                <li v-for="item in menu" class="nav-item">
+                <li v-for="item in menu" v-if="showLink(item)" class="nav-item">
                     <router-link :to="{ name: item.link.name, params: item.link.params }" class="nav-link">{{ item.name }}</router-link>
                 </li>
             </ul>
@@ -27,6 +27,12 @@
         methods: {
             searchClicked() {
                 this.$emit("searchClicked", this.query)
+            },
+            showLink(item) {
+                if (typeof(item.show) === 'undefined')
+                    return true
+                else
+                    return item.show
             }
         }
     }

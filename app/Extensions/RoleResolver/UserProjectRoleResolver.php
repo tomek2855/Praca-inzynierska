@@ -78,7 +78,7 @@ class UserProjectRoleResolver
 
             // Issues
             case self::USER_CAN_CREATE_ISSUE:
-                return $issueUser && in_array($issueUser->role, [
+                return $projectUser && in_array($projectUser->role, [
                         ProjectUser::PROJECT_OWNER,
                         ProjectUser::PROJECT_MODERATOR,
                         ProjectUser::PROJECT_USER,
@@ -98,7 +98,7 @@ class UserProjectRoleResolver
 
             // Comments
             case self::USER_CAN_ADD_COMMENT:
-                return $commentUser && in_array($commentUser->role, [
+                return $issueUser && in_array($issueUser->role, [
                         ProjectUser::PROJECT_OWNER,
                         ProjectUser::PROJECT_MODERATOR,
                         ProjectUser::PROJECT_USER,

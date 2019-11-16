@@ -23,10 +23,19 @@
                 tableHead: [{id: "id", name: "#", class: "bold center w-3"}, {id: "title", name: "Projekt"}, {id: "updated_at", name: "Data modyfikacji", class: "w-20"}],
                 tableLink: { name: "projects.show", params: { id: "id" } },
 
-                menu: [{ name: "Dodaj projekt", link: { name: "projects.add" } }]
+                menu: [{ name: "Dodaj projekt", show: false, link: { name: "projects.add" } }],
             }
         },
         mounted() {
+            this.service.getUser().then(response => {
+                let canCreateProject = false
+                if (response.data.is_admin > 0) {
+                    canCreateProject = true
+                }
+
+                this.menu = [{ name: "Dodaj projekt", show: canCreateProject, link: { name: "projects.add" } }]
+            })
+
             this.getResults();
         },
         methods: {

@@ -4,14 +4,14 @@
             <div class="col-lg-6">
                 <div class="form-group">
                     <label for="login">Login</label>
-                    <input v-model="login" type="text" class="form-control" id="login" required>
+                    <input v-model="login" v-on:keyup.enter="sendLogin" type="text" class="form-control" id="login" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Hasło</label>
-                    <input v-model="password" type="password" class="form-control" id="password" required>
+                    <input v-model="password" v-on:keyup.enter="sendLogin" type="password" class="form-control" id="password" required>
                 </div>
                 <button @click="sendLogin" type="submit" class="btn btn-primary">Login</button>
-                <span v-if="error">{{ error }}</span>
+                <span v-if="error" class="error">{{ error }}</span>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
                     this.refreshNavBar()
                     this.$router.push({ name: "home" })
                 }).catch(error => {
-                    this.error = error
+                    this.error = error.response.data.message
                 }).finally(() => {
                     loader.hide()
                 })
@@ -58,7 +58,5 @@
 </script>
 
 <style scoped>
-    span {
-        color: red;
-    }
+
 </style>
