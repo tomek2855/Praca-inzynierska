@@ -1908,6 +1908,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _dataService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../dataService */ "./resources/js/dataService.js");
 //
 //
 //
@@ -1916,50 +1917,68 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "nav-component",
   data: function data() {
     return {
-      elements: []
+      elements: [],
+      service: {},
+      user: {}
     };
   },
   mounted: function mounted() {
+    this.service = new _dataService__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this.setElements();
     this.$root.$on('refreshNavBar', this.setElements);
   },
   methods: {
     setElements: function setElements() {
-      this.elements = [{
-        path: {
-          name: "home"
-        },
-        name: "Strona główna",
-        show: true
-      }, {
-        path: {
-          name: 'projects.index'
-        },
-        name: "Projekty",
-        show: localStorage.getItem("token")
-      }, {
-        path: {
-          name: "issues.user"
-        },
-        name: "Twoje zadania",
-        show: localStorage.getItem("token")
-      }, {
-        path: {
-          name: "logout"
-        },
-        name: "Wyloguj się",
-        show: localStorage.getItem("token")
-      }, {
-        path: {
-          name: "login"
-        },
-        name: "Zaloguj się",
-        show: !localStorage.getItem("token")
-      }];
+      var _this = this;
+
+      this.service.getUser().then(function (res) {
+        _this.user = res.data;
+      })["catch"](function (error) {
+        _this.user = {};
+      })["finally"](function () {
+        _this.elements = [{
+          path: {
+            name: "home"
+          },
+          name: "Strona główna",
+          show: true
+        }, {
+          path: {
+            name: 'projects.index'
+          },
+          name: "Projekty",
+          show: localStorage.getItem("token")
+        }, {
+          path: {
+            name: "issues.user"
+          },
+          name: "Twoje zadania",
+          show: localStorage.getItem("token")
+        }, {
+          path: {
+            name: "issues.user"
+          },
+          name: "Panel administracyjny",
+          show: _this.user.is_admin > 0
+        }, {
+          path: {
+            name: "logout"
+          },
+          name: "Wyloguj się",
+          show: localStorage.getItem("token")
+        }, {
+          path: {
+            name: "login"
+          },
+          name: "Zaloguj się",
+          show: !localStorage.getItem("token")
+        }];
+      });
     }
   }
 });

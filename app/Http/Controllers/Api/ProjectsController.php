@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Project\AddUserToProjectRequest;
+use App\Http\Requests\Project\DeleteProjectRequest;
 use App\Http\Requests\Project\DeleteUserToProjectRequest;
+use App\Http\Requests\Project\GetProjectRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Services\Api\ProjectsService;
@@ -41,10 +43,11 @@ class ProjectsController extends Controller
     }
 
     /**
+     * @param GetProjectRequest $request
      * @param $id
      * @return Response
      */
-    public function show($id)
+    public function show(GetProjectRequest $request, $id)
     {
         $result = $this->projectsService->show($id);
 
@@ -74,28 +77,31 @@ class ProjectsController extends Controller
     }
 
     /**
+     * @param DeleteProjectRequest $request
      * @param $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(DeleteProjectRequest $request, $id)
     {
         return Response::create($this->projectsService->destroy($id));
     }
 
     /**
+     * @param GetProjectRequest $request
      * @param $id
      * @return Response
      */
-    public function getUserList($id)
+    public function getUserList(GetProjectRequest $request, $id)
     {
         return Response::create($this->projectsService->userList($id));
     }
 
     /**
+     * @param GetProjectRequest $request
      * @param $id
      * @return Response
      */
-    public function getAssignedUsers($id)
+    public function getAssignedUsers(GetProjectRequest $request, $id)
     {
         return Response::create($this->projectsService->getAssignedUsers($id));
     }

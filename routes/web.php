@@ -16,6 +16,7 @@
 Route::get('/files/{fileId}/{height?}/{weight?}', 'FilesController@download');
 
 Route::get('{all}', 'HomeController@index')->where('all', '.*');
+Route::get('/')->name('home');
 
 //Route::middleware('auth')->group(function () {
 //    Route::get('{all}', 'HomeController@index')->where('all', '.*');

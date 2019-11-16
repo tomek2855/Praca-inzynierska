@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Issue\GetIssueRequest;
 use App\Http\Requests\Issue\StoreIssueRequest;
 use App\Http\Requests\Issue\UpdateIssueRequest;
 use App\Services\Api\ProjectIssuesService;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectIssuesController extends Controller
 {
@@ -20,11 +19,11 @@ class ProjectIssuesController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param GetIssueRequest $request
      * @param int $projectId
      * @return Response
      */
-    public function index(Request $request, int $projectId)
+    public function index(GetIssueRequest $request, int $projectId)
     {
         $result = $this->projectIssuesService->index($request, $projectId);
 
@@ -54,11 +53,12 @@ class ProjectIssuesController extends Controller
     }
 
     /**
+     * @param GetIssueRequest $request
      * @param $projectId
      * @param $issueId
      * @return Response
      */
-    public function show($projectId, $issueId)
+    public function show(GetIssueRequest $request, $projectId, $issueId)
     {
         $result = $this->projectIssuesService->show($projectId, $issueId);
 

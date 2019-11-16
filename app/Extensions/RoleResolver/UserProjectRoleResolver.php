@@ -134,4 +134,15 @@ class UserProjectRoleResolver
 
         return $users;
     }
+
+    /**
+     * @param User $user
+     * @return Collection
+     */
+    public static function userProjectsList(User $user) : Collection
+    {
+        $projects = ProjectUser::where('user_id', $user->id)->with('project')->get()->pluck('project');
+
+        return $projects;
+    }
 }

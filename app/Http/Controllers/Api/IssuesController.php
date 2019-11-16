@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Comment\UpdateCommentRequest;
+use App\Http\Requests\Issue\DeleteIssueRequest;
+use App\Http\Requests\Issue\GetIssueRequest;
 use App\Http\Requests\Issue\UpdateIssueRequest;
 use App\Services\Api\IssuesService;
 use App\Http\Controllers\Controller;
 use App\Services\Api\ProjectIssuesService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 class IssuesController extends Controller
 {
@@ -38,10 +38,11 @@ class IssuesController extends Controller
     }
 
     /**
+     * @param GetIssueRequest $request
      * @param int $id
      * @return Response
      */
-    public function show(int $id)
+    public function show(GetIssueRequest $request, int $id)
     {
         $result = $this->issuesService->show($id);
 
@@ -71,10 +72,11 @@ class IssuesController extends Controller
     }
 
     /**
+     * @param DeleteIssueRequest $request
      * @param $issueId
      * @return Response
      */
-    public function destroy($issueId)
+    public function destroy(DeleteIssueRequest $request, $issueId)
     {
         return Response::create($this->issuesService->destroy($issueId));
     }

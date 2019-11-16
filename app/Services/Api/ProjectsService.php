@@ -18,12 +18,19 @@ class ProjectsService
      */
     public function index(Request $request)
     {
+        $query = Project::query();
+
         if ($request->has('q') && !empty($request->get('q')))
         {
-            return Project::where('title', 'LIKE', '%' . $request->get('q') . '%')->paginate(15);
+            $query->where('title', 'LIKE', '%' . $request->get('q') . '%');
         }
 
-        return Project::paginate(15);
+        if (!$request->user()->is_admin)
+        {
+            $query->whereIn('id', UserProjectRoleResolver::userProjectsList($request->user())->pluck('id'));
+        }
+
+        return $query->paginate(15);
     }
 
     /**
