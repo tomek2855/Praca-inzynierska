@@ -2281,7 +2281,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "user-component",
-  props: ["service"],
+  props: ["seagrvice"],
   data: function data() {
     return {
       user: {
@@ -2924,6 +2924,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "issue-component",
   props: ["service", "projectService", "commentsService"],
@@ -2932,6 +2938,22 @@ __webpack_require__.r(__webpack_exports__);
       issue: {},
       userList: [],
       error: "",
+      statusList: [{
+        id: 0,
+        name: "Nowy"
+      }, {
+        id: 1,
+        name: "W trakcie realizacji"
+      }, {
+        id: 2,
+        name: "Zakończony"
+      }, {
+        id: 3,
+        name: "Zamknięty"
+      }, {
+        id: 4,
+        name: "Odrzucony"
+      }],
       menu: [{
         name: "Powrót",
         link: {
@@ -2972,6 +2994,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     userChanged: function userChanged() {
+      var loader = this.$loading.show();
+      this.service.save(this.issue)["finally"](function () {
+        loader.hide();
+      });
+    },
+    statusChanged: function statusChanged() {
       var loader = this.$loading.show();
       this.service.save(this.issue)["finally"](function () {
         loader.hide();
@@ -3019,6 +3047,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         id: "title",
         name: "Zadanie"
+      }, {
+        id: "statusText",
+        name: "Status"
       }, {
         id: "updated_at",
         name: "Data modyfikacji",
@@ -3106,6 +3137,9 @@ __webpack_require__.r(__webpack_exports__);
         id: "assigned_user.name",
         name: "Przypisane do",
         "class": "w-30"
+      }, {
+        id: "statusText",
+        name: "Status"
       }, {
         id: "updated_at",
         name: "Data modyfikacji",
@@ -43055,6 +43089,54 @@ var render = function() {
                 })
               ],
               2
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "status" } }, [_vm._v("Status")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.issue.status,
+                    expression: "issue.status"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { id: "status" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.issue,
+                        "status",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    },
+                    _vm.statusChanged
+                  ]
+                }
+              },
+              _vm._l(_vm.statusList, function(status) {
+                return _c("option", { domProps: { value: status.id } }, [
+                  _vm._v(_vm._s(status.name))
+                ])
+              }),
+              0
             )
           ])
         ])

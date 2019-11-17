@@ -20,7 +20,7 @@
                 issues: {},
                 query: "",
                 error: "",
-                tableHead: [{id: "id", name: "#", class: "bold center w-3"}, {id: "title", name: "Zadanie"}, {id: "updated_at", name: "Data modyfikacji", class: "w-20"}],
+                tableHead: [{id: "id", name: "#", class: "bold center w-3"}, {id: "title", name: "Zadanie"}, {id: "statusText", name: "Status"}, {id: "updated_at", name: "Data modyfikacji", class: "w-20"}],
                 tableLink: { name: "issues.show", params: { id: "id", projectId: "project_id" } },
             }
         },

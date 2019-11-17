@@ -38,7 +38,7 @@
                         <tr v-for="project in user.projects">
                             <td>
                                 <router-link :to='{ name: "projects.show", params: { id: project.id } }' v-text="project.title"></router-link>
-                                </td>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -53,7 +53,7 @@
 <script>
     export default {
         name: "user-component",
-        props: ["service"],
+        props: ["seagrvice"],
         data() {
             return {
                 user: {name: ""},

@@ -20,10 +20,19 @@ class ProjectIssuesService
         {
             if ($request->has('q') && !empty($request->get('q')))
             {
-                return Project::findOrFail($projectId)->issues()->with('assignedUser')->where('title', 'LIKE', '%' . $request->get('q') . '%')->paginate(15);
+                $result = Project::findOrFail($projectId)->issues()->with('assignedUser')->where('title', 'LIKE', '%' . $request->get('q') . '%')->paginate(15);
+            }
+            else
+            {
+                $result = Project::findOrFail($projectId)->issues()->with('assignedUser')->paginate(15);
             }
 
-            return Project::findOrFail($projectId)->issues()->with('assignedUser')->paginate(15);
+            foreach ($result as &$item)
+            {
+                $item->statusText = $item->getStatus();
+            }
+
+            return $result;
         }
         catch (ModelNotFoundException $e)
         {

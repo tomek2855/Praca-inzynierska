@@ -21,7 +21,7 @@
                 error: "",
                 query: "",
 
-                tableHead: [{id: "id", name: "#", class: "bold center w-3"}, {id: "title", name: "Zadanie"}, {id: "assigned_user.name", name: "Przypisane do", class: "w-30"}, {id: "updated_at", name: "Data modyfikacji", class: "w-20"}],
+                tableHead: [{id: "id", name: "#", class: "bold center w-3"}, {id: "title", name: "Zadanie"}, {id: "assigned_user.name", name: "Przypisane do", class: "w-30"}, {id: "statusText", name: "Status"}, {id: "updated_at", name: "Data modyfikacji", class: "w-20"}],
                 tableLink: { name: "issues.show", params: { id: "id", projectId: "project_id" } },
                 menu: [
                     {name: "Dodaj zadanie", link: {name: "projects.issues.add", params: {projectId: this.$route.params.projectId}}},

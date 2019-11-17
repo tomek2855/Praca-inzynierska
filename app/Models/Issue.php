@@ -12,11 +12,29 @@ class Issue extends Model implements AuditableInterface
     use AuditableTrait;
     use SoftDeletes;
 
+    const STATUS_NEW = 0;
+    const STATUS_IN_PROGRESS = 1;
+    const STATUS_ENDED = 2;
+    const STATUS_CLOSED = 3;
+    const STATUS_REJECTED = 4;
+
     /**
      * @var array
      */
     protected $guarded = [
         'id',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'content',
+        'terminated',
+        'project_id',
+        'assigned_user_id',
+        'status',
     ];
 
     /**
@@ -42,5 +60,34 @@ class Issue extends Model implements AuditableInterface
     public function assignedUser()
     {
         return $this->hasOne(User::class, 'id', 'assigned_user_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus() : string
+    {
+        $status = '';
+
+        switch ($this->status)
+        {
+            case self::STATUS_NEW:
+                $status = 'Nowy';
+                break;
+            case self::STATUS_IN_PROGRESS:
+                $status = 'W trakcie realizacji';
+                break;
+            case self::STATUS_ENDED:
+                $staus = 'Zakończony';
+                break;
+            case self::STATUS_CLOSED:
+                $status = 'Zamknięty';
+                break;
+            case self::STATUS_REJECTED:
+                $status = 'Odrzucony';
+                break;
+        }
+
+        return $status;
     }
 }

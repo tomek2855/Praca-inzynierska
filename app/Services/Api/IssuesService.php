@@ -17,10 +17,19 @@ class IssuesService
     {
         if ($request->has('q') && !empty($request->get('q')))
         {
-            return Issue::where('assigned_user_id', Auth::id())->where('title', 'LIKE', '%' . $request->get('q') . '%')->orderBy('project_id')->paginate(15);
+            $result = Issue::where('assigned_user_id', Auth::id())->where('title', 'LIKE', '%' . $request->get('q') . '%')->orderBy('project_id')->paginate(15);
+        }
+        else
+        {
+            $result = Issue::where('assigned_user_id', Auth::id())->orderBy('project_id')->paginate(15);
         }
 
-        return Issue::where('assigned_user_id', Auth::id())->orderBy('project_id')->paginate(15);
+        foreach ($result as &$item)
+        {
+            $item->statusText = $item->getStatus();
+        }
+
+        return $result;
     }
 
     /**
@@ -32,6 +41,8 @@ class IssuesService
         try
         {
             $issue = Issue::findOrFail($id);
+
+            $issue->statusText = $issue->getStatus();
 
             return $issue;
         }

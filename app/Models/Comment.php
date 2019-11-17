@@ -22,6 +22,15 @@ class Comment extends Model implements AuditableInterface
     /**
      * @var array
      */
+    protected $fillable = [
+        'content',
+        'issue_id',
+        'file_id',
+    ];
+
+    /**
+     * @var array
+     */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

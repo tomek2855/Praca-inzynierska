@@ -22,6 +22,15 @@ class Project extends Model implements AuditableInterface
     /**
      * @var array
      */
+    protected $fillable = [
+        'title',
+        'content',
+        'terminated',
+    ];
+
+    /**
+     * @var array
+     */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

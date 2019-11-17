@@ -14,6 +14,12 @@
                         <option v-for="user in userList" v-bind:value="user.id">{{ user.name }}</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select v-model="issue.status" @change="statusChanged" id="status" class="form-control">
+                        <option v-for="status in statusList" v-bind:value="status.id">{{ status.name }}</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -32,6 +38,13 @@
                 issue: {},
                 userList: [],
                 error: "",
+                statusList: [
+                    {id: 0, name: "Nowy"},
+                    {id: 1, name: "W trakcie realizacji"},
+                    {id: 2, name: "Zakończony"},
+                    {id: 3, name: "Zamknięty"},
+                    {id: 4, name: "Odrzucony"},
+                ],
 
                 menu: [
                     { name: "Powrót", link: { name: "projects.issues", params: { projectId: this.$route.params.projectId } } },
@@ -60,6 +73,13 @@
         },
         methods: {
             userChanged() {
+                let loader = this.$loading.show()
+
+                this.service.save(this.issue).finally(() => {
+                    loader.hide()
+                })
+            },
+            statusChanged() {
                 let loader = this.$loading.show()
 
                 this.service.save(this.issue).finally(() => {
