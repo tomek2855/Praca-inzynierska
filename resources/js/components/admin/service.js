@@ -22,6 +22,9 @@ class Service extends DataService {
     deleteUser(id) {
         return window.axios.delete(this.path() + "users/" + id)
     }
+    generateNewPass(id) {
+        return window.axios.post(this.path() + "users/" + id + "/generateNewPass");
+    }
 
 }
 

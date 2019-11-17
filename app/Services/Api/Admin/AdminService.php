@@ -3,9 +3,11 @@
 namespace App\Services\Api\Admin;
 
 use App\Extensions\RoleResolver\UserProjectRoleResolver;
+use App\Mail\NewUserPassword;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AdminService
@@ -74,11 +76,15 @@ class AdminService
     {
         try
         {
+            $password = Str::random(8);
+
             $user = User::create($request->all() + [
-                'password' => \Hash::make(Str::random(8))
+                'password' => \Hash::make($password)
             ]);
 
             $user->save();
+
+            Mail::to($user->email)->send(new NewUserPassword($password));
 
             return $user;
         }
@@ -97,6 +103,31 @@ class AdminService
         try
         {
             return User::findOrFail($id)->delete();
+        }
+        catch (\Exception $e)
+        {
+            return false;
+        }
+    }
+
+    /**
+     * @param int $id
+     */
+    public function generateNewPassword(int $id) : bool
+    {
+        try
+        {
+            $password = Str::random(8);
+
+            $user = User::findOrFail($id);
+
+            $user->password = \Hash::make($password);
+
+            $user->save();
+
+            Mail::to($user->email)->send(new NewUserPassword($password));
+
+            return true;
         }
         catch (\Exception $e)
         {

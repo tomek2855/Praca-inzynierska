@@ -2154,7 +2154,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$router.push({
           name: "admin.users.show",
           params: {
-            is: _this2.$route.params.id
+            id: response.data.id
           }
         });
       })["catch"](function (error) {
@@ -2279,9 +2279,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "user-component",
-  props: ["seagrvice"],
+  props: ["service"],
   data: function data() {
     return {
       user: {
@@ -2319,6 +2323,22 @@ __webpack_require__.r(__webpack_exports__);
       })["finally"](function () {
         loader.hide();
       });
+    },
+    sendNewPassword: function sendNewPassword() {
+      var _this2 = this;
+
+      if (this.user.id) {
+        this.$dialog.confirm('Na pewno wysłać?', {
+          okText: "Tak",
+          cancelText: "Nie"
+        }).then(function () {
+          var loader = _this2.$loading.show();
+
+          _this2.service.generateNewPass(_this2.user.id)["finally"](function () {
+            loader.hide();
+          });
+        });
+      }
     }
   }
 });
@@ -42369,6 +42389,21 @@ var render = function() {
                 _vm.user.is_admin
                   ? _c("td", [_vm._v("Tak")])
                   : _c("td", [_vm._v("Nie")])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Wyślij nowe hasło na email")]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-info",
+                      on: { click: _vm.sendNewPassword }
+                    },
+                    [_vm._v("Wyślij")]
+                  )
+                ])
               ])
             ])
           ])
@@ -60815,6 +60850,11 @@ function (_DataService) {
     key: "deleteUser",
     value: function deleteUser(id) {
       return window.axios["delete"](this.path() + "users/" + id);
+    }
+  }, {
+    key: "generateNewPass",
+    value: function generateNewPass(id) {
+      return window.axios.post(this.path() + "users/" + id + "/generateNewPass");
     }
   }]);
 

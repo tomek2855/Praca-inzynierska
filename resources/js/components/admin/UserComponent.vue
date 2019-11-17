@@ -28,6 +28,10 @@
                             <td v-if="user.is_admin">Tak</td>
                             <td v-else>Nie</td>
                         </tr>
+                        <tr>
+                            <td>Wyślij nowe hasło na email</td>
+                            <td><button @click="sendNewPassword" class="btn btn-info">Wyślij</button></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -53,7 +57,7 @@
 <script>
     export default {
         name: "user-component",
-        props: ["seagrvice"],
+        props: ["service"],
         data() {
             return {
                 user: {name: ""},
@@ -79,6 +83,20 @@
                     loader.hide()
                 })
             },
+
+            sendNewPassword() {
+                if (this.user.id) {
+                    this.$dialog
+                        .confirm('Na pewno wysłać?', {okText: "Tak", cancelText: "Nie"})
+                        .then(() => {
+                            let loader = this.$loading.show()
+
+                            this.service.generateNewPass(this.user.id).finally(() => {
+                                loader.hide()
+                            })
+                        })
+                }
+            }
         }
     }
 </script>

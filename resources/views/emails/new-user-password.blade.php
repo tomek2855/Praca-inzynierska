@@ -1,0 +1,1 @@
+Twoje nowe hasło: {{ $newPassword }}

@@ -95,4 +95,20 @@ class UsersController extends Controller
 
         return Response::create('', Response::HTTP_BAD_REQUEST);
     }
+
+    /**
+     * @param int $id
+     * @return Response
+     */
+    public function generateNewPass(int $id)
+    {
+        $result = $this->adminService->generateNewPassword($id);
+
+        if ($result)
+        {
+            return Response::create('');
+        }
+
+        return Response::create('', Response::HTTP_NOT_FOUND);
+    }
 }

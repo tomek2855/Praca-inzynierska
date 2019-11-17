@@ -91,7 +91,7 @@
                 let loader = this.$loading.show()
 
                 this.service.saveUser(this.user).then(response => {
-                    this.$router.push({ name: "admin.users.show", params: { is: this.$route.params.id } })
+                    this.$router.push({ name: "admin.users.show", params: { id: response.data.id } })
                 }).catch(error => {
                     this.error = ""
 
@@ -138,7 +138,7 @@
                             })
                         })
                 }
-            }
+            },
         }
     }
 </script>

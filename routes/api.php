@@ -38,5 +38,8 @@ Route::middleware('auth:api')->namespace('Api')->group(function () {
     Route::post('/issues/{issueId}/comments', 'IssueCommentsController@addIssueComment');
 
     // Admin
-    Route::apiResource('/admin/users', 'Admin\UsersController');
+    Route::middleware('is_admin')->group(function () {
+        Route::apiResource('/admin/users', 'Admin\UsersController');
+        Route::post('admin/users/{id}/generateNewPass', 'Admin\UsersController@generateNewPass');
+    });
 });
