@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\StoreCommentRequest;
+use App\Http\Requests\Issue\GetIssueRequest;
 use App\Services\Api\CommentsService;
 use Illuminate\Http\Response;
 
@@ -22,10 +23,11 @@ class IssueCommentsController extends Controller
     }
 
     /**
+     * @param GetIssueRequest $request
      * @param int $issueId
      * @return Response
      */
-    public function getIssueComments(int $issueId)
+    public function getIssueComments(GetIssueRequest $request, $issueId)
     {
         $result = $this->commentsService->showIssueComments($issueId);
 

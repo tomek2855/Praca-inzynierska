@@ -36,4 +36,7 @@ Route::middleware('auth:api')->namespace('Api')->group(function () {
     Route::delete('/projects/{projectId}/assignedUsers', 'ProjectsController@deleteAssignedUsers');
     Route::get('/issues/{issueId}/comments', 'IssueCommentsController@getIssueComments');
     Route::post('/issues/{issueId}/comments', 'IssueCommentsController@addIssueComment');
+
+    // Admin
+    Route::apiResource('/admin/users', 'Admin\UsersController');
 });

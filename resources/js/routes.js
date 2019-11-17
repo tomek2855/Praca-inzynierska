@@ -11,11 +11,15 @@ import IssueComponent from './components/issues/IssueComponent'
 import ProjectIssuesListComponent from './components/issues/ProjectIssuesListComponent'
 import IssueAddComponent from './components/issues/IssueAddComponent'
 import ProjectEditComponent from './components/projects/ProjectEditComponent'
+import UsersListComponent from './components/admin/UsersListComponent'
+import UserComponent from './components/admin/UserComponent'
+import UserAddComponent from './components/admin/UserAddComponent'
 
 import AuthService from './components/auth/service'
 import ProjectsService from './components/projects/service'
 import IssuesService from './components/issues/service'
 import CommentsService from './components/comments/service'
+import AdminService from './components/admin/service'
 
 window.router = new VueRouter({
     mode: "history",
@@ -113,6 +117,38 @@ window.router = new VueRouter({
                 service: IssuesService,
                 projectService: ProjectsService,
                 commentsService: CommentsService,
+            }
+        },
+        {
+            path: "/admin/users",
+            name: "admin.users",
+            component: UsersListComponent,
+            props: {
+                service: AdminService
+            }
+        },
+        {
+            path: "/admin/users/add",
+            name: "admin.users.add",
+            component: UserAddComponent,
+            props: {
+                service: AdminService
+            }
+        },
+        {
+            path: "/admin/users/:id",
+            name: "admin.users.show",
+            component: UserComponent,
+            props: {
+                service: AdminService
+            }
+        },
+        {
+            path: "/admin/users/:id/edit",
+            name: "admin.users.edit",
+            component: UserAddComponent,
+            props: {
+                service: AdminService
             }
         }
     ]

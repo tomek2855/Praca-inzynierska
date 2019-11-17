@@ -49,7 +49,7 @@
                             show: (localStorage.getItem("token"))
                         },
                         {
-                            path: { name: "issues.user" },
+                            path: { name: "admin.users" },
                             name: "Panel administracyjny",
                             show: this.user.is_admin > 0
                         },

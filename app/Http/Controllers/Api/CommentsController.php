@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Services\Api\CommentsService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Comment\DeleteCommentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -22,10 +23,11 @@ class CommentsController extends Controller
     }
 
     /**
+     * @param DeleteCommentRequest $request
      * @param int $id
      * @return Response
      */
-    public function destroy(int $id)
+    public function destroy(DeleteCommentRequest $request, int $id)
     {
         $result = $this->commentsService->deleteComment($id);
 
