@@ -38,6 +38,6 @@ class FilesController extends Controller
             return Response::create('', Response::HTTP_NOT_FOUND);
         }
 
-        return response()->download($result->getFullFilePath(), $result->original_filename, ['filename' => $result->original_filename]);
+        return response()->file($result->getFullFilePath(), ['filename' => $result->original_filename]);
     }
 }

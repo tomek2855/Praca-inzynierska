@@ -62400,8 +62400,11 @@ function () {
     key: "downloadFile",
     value: function downloadFile(fileId) {
       this.checkForToken();
-      return window.axios.get('/files/' + fileId).then(function (response) {
-        var blob = new Blob([response.data], {
+      return window.axios.get('/files/' + fileId, {
+        dataType: "binary",
+        responseType: "blob"
+      }).then(function (response) {
+        var blob = new File([response.data], {
           type: response.headers['content-type']
         });
         var link = document.createElement('a');

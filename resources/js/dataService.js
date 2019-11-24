@@ -63,8 +63,11 @@ class DataService {
     downloadFile(fileId) {
         this.checkForToken()
 
-        return window.axios.get('/files/' + fileId).then(response => {
-            const blob = new Blob([response.data], { type: response.headers['content-type'] })
+        return window.axios.get('/files/' + fileId, {
+            dataType: "binary",
+            responseType: "blob"
+        }).then(response => {
+            const blob = new File([response.data], { type: response.headers['content-type'] })
             let link = document.createElement('a')
             link.href = window.URL.createObjectURL(blob)
             link.download = response.headers.filename
