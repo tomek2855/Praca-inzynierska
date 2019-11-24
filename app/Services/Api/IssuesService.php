@@ -2,10 +2,13 @@
 
 namespace App\Services\Api;
 
+use App\Mail\AssigneIssueToUser;
 use App\Models\Issue;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class IssuesService
 {
@@ -62,7 +65,21 @@ class IssuesService
         try
         {
             $issue = Issue::findOrFail($id);
+
+            $oldAssignedUserId = $issue->assigned_user_id;
+
             $issue->update($request->all());
+
+            $newAssignedUserId = $issue->assigned_user_id;
+
+            if ($oldAssignedUserId !== $newAssignedUserId)
+            {
+                $oldUser = User::findOrFail($oldAssignedUserId);
+                $newUser = User::findOrFail($newAssignedUserId);
+
+                Mail::to($oldUser->email)->send(new AssigneIssueToUser($issue, $newUser));
+                Mail::to($newUser->email)->send(new AssigneIssueToUser($issue, $newUser));
+            }
 
             return $issue;
         }

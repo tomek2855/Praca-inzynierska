@@ -2,11 +2,12 @@
 
 namespace App\Services\Api;
 
-
+use App\Mail\NewCommentInIssue;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CommentsService
 {
@@ -55,7 +56,11 @@ class CommentsService
     {
         try
         {
-            return Comment::create($request->only(['content', 'file_id']) + ['issue_id' => $issueId]);
+            $comment = Comment::create($request->only(['content', 'file_id']) + ['issue_id' => $issueId]);
+
+            Mail::to($comment->issue->assignedUser->email)->send(new NewCommentInIssue($comment->issue, $comment));
+
+            return $comment;
         }
         catch (\Exception $e)
         {

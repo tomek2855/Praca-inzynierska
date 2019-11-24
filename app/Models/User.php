@@ -43,8 +43,16 @@ class User extends Authenticatable
     /**
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin() : bool
     {
         return $this->is_admin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName() : string
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 }
