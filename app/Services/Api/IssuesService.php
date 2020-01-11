@@ -89,7 +89,7 @@ class IssuesService
 
                 if ($oldUser && !empty($oldUser->email))
                 {
-                    Mail::to($oldUser->email)->send(new AssigneIssueToUser($issue, $newUser));
+                    Mail::to($oldUser->email)->send(new AssigneIssueToUser($issue, $newUser ?? User::defaultUser()));
                 }
                 if ($newUser && !empty($newUser->email))
                 {

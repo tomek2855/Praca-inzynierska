@@ -55,4 +55,17 @@ class User extends Authenticatable
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    /**
+     * @return self
+     */
+    public static function defaultUser()
+    {
+        $user = new self();
+        $user->login = '';
+        $user->first_name = '';
+        $user->last_name = '';
+
+        return $user;
+    }
 }
