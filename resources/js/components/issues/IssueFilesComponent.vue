@@ -6,6 +6,9 @@
                 <ul>
                     <li v-for="file in issue.files">
                         <a v-bind:href="fileUrl(file.id)" @click.prevent="service.downloadFile(file.id)" v-text="file.original_filename"></a>
+                        <small>
+                            &lt;{{ file.created_at }}&gt; {{ file.user.first_name }} {{ file.user.last_name }}
+                        </small>
                     </li>
                 </ul>
             </div>

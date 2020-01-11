@@ -26,6 +26,13 @@ class File extends Model implements AuditableInterface
         'updated_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by');
+    }
 
     /**
      * @return bool|null

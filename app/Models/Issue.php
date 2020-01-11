@@ -67,7 +67,7 @@ class Issue extends Model implements AuditableInterface
      */
     public function files()
     {
-        return $this->belongsToMany(File::class, 'issue_file')->using(IssueFile::class);
+        return $this->belongsToMany(File::class, 'issue_file')->using(IssueFile::class)->with('user');
     }
 
     /**
