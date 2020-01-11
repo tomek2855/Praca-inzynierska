@@ -38,7 +38,8 @@ class AppServiceProvider extends ServiceProvider
         Passport::routes();
 
         $this->loadMigrationsFrom([
-            base_path() . '/database/migrations/2019'
+            base_path() . '/database/migrations/2019',
+            base_path() . '/database/migrations/2020'
         ]);
 
         $this->loadObservers();
