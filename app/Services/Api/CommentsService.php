@@ -58,7 +58,7 @@ class CommentsService
         {
             $comment = Comment::create($request->only(['content', 'file_id']) + ['issue_id' => $issueId]);
 
-            if (!empty($comment->issue->assignedUser->email))
+            if (isset($comment->issue->assignedUser) && !empty($comment->issue->assignedUser->email))
             {
                 Mail::to($comment->issue->assignedUser->email)->send(new NewCommentInIssue($comment->issue, $comment));
             }
