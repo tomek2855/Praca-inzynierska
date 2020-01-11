@@ -63,6 +63,14 @@ class Issue extends Model implements AuditableInterface
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function files()
+    {
+        return $this->belongsToMany(File::class, 'issue_file')->using(IssueFile::class);
+    }
+
+    /**
      * @return string
      */
     public function getStatus() : string

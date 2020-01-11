@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         Aplikacja webowa do zarządzania projektami.
-
-        <pre>dr. Adam Mazurkiewicz</pre>
-        <pre>Tomasz Przybyło</pre>
+        <br>
+        <b>Promotor: </b><pre>dr. Adam Mazurkiewicz</pre>
+        <b>Autor: </b><pre>Tomasz Przybyło</pre>
     </div>
 </template>
 

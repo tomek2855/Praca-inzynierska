@@ -80,4 +80,34 @@ class IssuesController extends Controller
     {
         return Response::create($this->issuesService->destroy($issueId));
     }
+
+    /**
+     * @param Request $request
+     * @param $issueId
+     * @return Response
+     */
+    public function postAddFile(Request $request, $issueId)
+    {
+        $result = $this->issuesService->addFileToIssue($request, $issueId);
+
+        if ($result)
+        {
+            return Response::create(['id' => $result], Response::HTTP_CREATED);
+        }
+
+        return Response::create('', Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @param Request $request
+     * @param $issueId
+     * @param $fileId
+     * @return Response
+     */
+    public function deleteFile(Request $request, $issueId, $fileId)
+    {
+        $result = $this->issuesService->deleteFileFromIssue($request, $fileId, $issueId);
+
+        return Response::create($result);
+    }
 }

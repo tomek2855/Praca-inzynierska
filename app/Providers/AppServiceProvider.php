@@ -5,12 +5,12 @@ namespace App\Providers;
 use App\Models\Comment;
 use App\Models\File;
 use App\Models\Issue;
+use App\Models\IssueFile;
 use App\Models\Project;
 use App\Models\ProjectUser;
-use App\Models\UserRoles;
 use App\Observers\StoredByUserObserver;
 use App\Observers\StoredCommentFileObserver;
-use App\Observers\UserRolesObserver;
+use App\Observers\StoredIssueFileObserver;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -58,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
         Issue::observe(StoredByUserObserver::class);
         Comment::observe(StoredByUserObserver::class);
 
+        IssueFile::observe(StoredIssueFileObserver::class);
         Comment::observe(StoredCommentFileObserver::class);
     }
 }

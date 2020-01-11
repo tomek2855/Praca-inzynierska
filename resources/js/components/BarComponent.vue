@@ -3,7 +3,7 @@
         <div class="title">{{ title }}</div>
         <div>
             <ul class="nav">
-                <li v-for="item in menu" v-if="showLink(item)" class="nav-item">
+                <li v-for="item in menu" v-if="showLink(item)" class="nav-item" v-bind:class="{ 'font-weight-bold': active(item.link.name) }">
                     <router-link :to="{ name: item.link.name, params: item.link.params }" class="nav-link">{{ item.name }}</router-link>
                 </li>
             </ul>
@@ -33,6 +33,9 @@
                     return true
                 else
                     return item.show
+            },
+            active(link) {
+                return link == this.$route.name
             }
         }
     }

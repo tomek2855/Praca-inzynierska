@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::namespace('Api')->group(function () {
+Route::namespace('Api')->namespace('Api')->group(function () {
    Route::post('/login', 'AuthController@login');
 });
 
@@ -36,6 +36,8 @@ Route::middleware('auth:api')->namespace('Api')->group(function () {
     Route::delete('/projects/{projectId}/assignedUsers', 'ProjectsController@deleteAssignedUsers');
     Route::get('/issues/{issueId}/comments', 'IssueCommentsController@getIssueComments');
     Route::post('/issues/{issueId}/comments', 'IssueCommentsController@addIssueComment');
+    Route::post('/issues/{issueId}/file', 'IssuesController@postAddFile');
+    Route::delete('/issues/{issueId}/file/{fileId}', 'IssuesController@deleteFile');
 
     // Admin
     Route::middleware('is_admin')->group(function () {

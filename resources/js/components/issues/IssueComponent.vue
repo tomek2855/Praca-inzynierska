@@ -48,7 +48,11 @@
 
                 menu: [
                     { name: "Powrót", link: { name: "projects.issues", params: { projectId: this.$route.params.projectId } } },
-                    { name: "Edytuj zadanie", link: { name: "projects.issues.edit", params: { issueId: this.$route.params.id } } }
+                    { name: "Edytuj zadanie", link: { name: "projects.issues.edit", params: { issueId: this.$route.params.id } } },
+                    {
+                        name: "Pliki",
+                        link: { name: "issues.files", params: { issueId: this.$route.params.id } }
+                    }
                 ]
             }
         },

@@ -4,7 +4,10 @@ namespace App\Services\Api;
 
 use App\Mail\AssigneIssueToUser;
 use App\Models\Issue;
+use App\Models\IssueFile;
 use App\Models\User;
+use App\Services\FilesService;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +15,13 @@ use Illuminate\Support\Facades\Mail;
 
 class IssuesService
 {
+    protected $filesService;
+
+    public function __construct(FilesService $filesService)
+    {
+        $this->filesService = $filesService;
+    }
+
     /**
      * @param Request $request
      * @return mixed
@@ -43,7 +53,7 @@ class IssuesService
     {
         try
         {
-            $issue = Issue::findOrFail($id);
+            $issue = Issue::with('files')->findOrFail($id);
 
             $issue->statusText = $issue->getStatus();
 
@@ -102,5 +112,34 @@ class IssuesService
     public function destroy(int $issueId) : int
     {
         return Issue::where('id', $issueId)->firstOrFail()->delete();
+    }
+
+    /**
+     * @param Request $request
+     * @param int $issueId
+     * @return bool
+     */
+    public function addFileToIssue(Request $request, int $issueId) : bool
+    {
+        try
+        {
+            $fileId = $this->filesService->uploadFile($request);
+
+            IssueFile::create([
+                'issue_id' => $issueId,
+                'file_id' => $fileId,
+            ]);
+
+            return true;
+        }
+        catch (Exception $e)
+        {
+            return false;
+        }
+    }
+
+    public function deleteFileFromIssue(Request $request, int $fileId, int $issueId)
+    {
+
     }
 }

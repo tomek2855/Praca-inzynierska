@@ -4,7 +4,6 @@
         <span v-if="comments.length < 1">Brak komentarzy</span>
         <div v-for="comment in comments" class="card">
             <div class="card-header">
-                foto
                 {{ comment.user.name }}
                 <span v-show="comment.updated_at" class="small"> - {{ comment.updated_at }}</span>
                 <div class="inline">

@@ -10,7 +10,7 @@
             </div>
             <div class="col-lg-3">
                 <h5>Uczestnicy projektu</h5>
-                <ul class="list-group list-group-flush">
+                <ul class="list-group">
                     <li v-for="user in project.users" class="list-group-item">{{ user.name }}</li>
                 </ul>
             </div>

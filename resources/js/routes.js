@@ -14,6 +14,8 @@ import ProjectEditComponent from './components/projects/ProjectEditComponent'
 import UsersListComponent from './components/admin/UsersListComponent'
 import UserComponent from './components/admin/UserComponent'
 import UserAddComponent from './components/admin/UserAddComponent'
+import IssueFilesComponent from './components/issues/IssueFilesComponent'
+import FilesListComponent from './components/FilesListComponent'
 
 import AuthService from './components/auth/service'
 import ProjectsService from './components/projects/service'
@@ -117,6 +119,14 @@ window.router = new VueRouter({
                 service: IssuesService,
                 projectService: ProjectsService,
                 commentsService: CommentsService,
+            }
+        },
+        {
+            path: "/issues/:issueId/files",
+            name: "issues.files",
+            component: IssueFilesComponent,
+            props: {
+                service: IssuesService,
             }
         },
         {
