@@ -84,7 +84,10 @@ class AdminService
 
             $user->save();
 
-            Mail::to($user->email)->send(new NewUserPassword($password));
+            if (!empty($user->email))
+            {
+                Mail::to($user->email)->send(new NewUserPassword($password));
+            }
 
             return $user;
         }
@@ -125,7 +128,10 @@ class AdminService
 
             $user->save();
 
-            Mail::to($user->email)->send(new NewUserPassword($password));
+            if (!empty($user->email))
+            {
+                Mail::to($user->email)->send(new NewUserPassword($password));
+            }
 
             return true;
         }

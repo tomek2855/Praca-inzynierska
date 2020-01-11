@@ -77,8 +77,14 @@ class IssuesService
                 $oldUser = User::findOrFail($oldAssignedUserId);
                 $newUser = User::findOrFail($newAssignedUserId);
 
-                Mail::to($oldUser->email)->send(new AssigneIssueToUser($issue, $newUser));
-                Mail::to($newUser->email)->send(new AssigneIssueToUser($issue, $newUser));
+                if (!empty($oldUser->email))
+                {
+                    Mail::to($oldUser->email)->send(new AssigneIssueToUser($issue, $newUser));
+                }
+                if (!empty($newUser->email))
+                {
+                    Mail::to($newUser->email)->send(new AssigneIssueToUser($issue, $newUser));
+                }
             }
 
             return $issue;
