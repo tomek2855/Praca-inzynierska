@@ -26,7 +26,7 @@ class StoreCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'required|string|min:5',
+            'content' => 'required|string|min:5|max:10000',
             'file_id' => 'nullable|exists:files,id',
         ];
     }
