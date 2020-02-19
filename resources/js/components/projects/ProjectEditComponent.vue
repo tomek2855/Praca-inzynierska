@@ -129,7 +129,7 @@
             },
             deleteUser(user) {
                 this.$dialog
-                    .confirm('Na pewno usunąć komentarz?', {okText: "Tak", cancelText: "Nie"})
+                    .confirm('Na pewno usunąć?', {okText: "Tak", cancelText: "Nie"})
                     .then(() => {
                         let loader = this.$loading.show()
 

@@ -23,11 +23,11 @@
                             <td>Data utworzenia</td>
                             <td v-text="user.created_at"></td>
                         </tr>
-                        <tr>
-                            <td>Administrator</td>
-                            <td v-if="user.is_admin">Tak</td>
-                            <td v-else>Nie</td>
-                        </tr>
+                        <!-- <tr> -->
+                            <!-- <td>Administrator</td> -->
+                            <!-- <td v-if="user.is_admin">Tak</td> -->
+                            <!-- <td v-else>Nie</td> -->
+                        <!-- </tr> -->
                         <tr>
                             <td>Wyślij nowe hasło na email</td>
                             <td><button @click="sendNewPassword" class="btn btn-info">Wyślij</button></td>

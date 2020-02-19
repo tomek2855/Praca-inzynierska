@@ -34,6 +34,11 @@ class UserFileRoleResolver
                 return false;
             }
 
+            if ($user->is_admin)
+            {
+                return true;
+            }
+
             return UserProjectRoleResolver::projectUsersList($projectFile)->pluck('id')->contains($user->id);
         }
 

@@ -53,7 +53,7 @@ class IssuesService
     {
         try
         {
-            $issue = Issue::with('files')->findOrFail($id);
+            $issue = Issue::with('files')->with('project')->with('project.users')->findOrFail($id);
 
             $issue->statusText = $issue->getStatus();
 

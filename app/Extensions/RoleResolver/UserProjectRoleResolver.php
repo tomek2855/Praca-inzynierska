@@ -130,6 +130,7 @@ class UserProjectRoleResolver
             ProjectUser::PROJECT_OWNER,
             ProjectUser::PROJECT_MODERATOR,
             ProjectUser::PROJECT_USER,
+            ProjectUser::PROJECT_READER,
         ])->with('user')->get()->pluck('user');
 
         return $users;

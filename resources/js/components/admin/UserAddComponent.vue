@@ -32,12 +32,12 @@
                         <td>Data utworzenia</td>
                         <td v-text="user.created_at"></td>
                     </tr>
-                    <tr>
-                        <td>Administrator</td>
-                        <td>
-                            <input v-model="user.is_admin" type="checkbox">
-                        </td>
-                    </tr>
+                    <!-- <tr> -->
+                        <!-- <td>Administrator</td> -->
+                        <!-- <td> -->
+                            <!-- <input v-model="user.is_admin" type="checkbox"> -->
+                        <!-- </td> -->
+                    <!-- </tr> -->
                     <tr>
                         <td></td>
                         <td>

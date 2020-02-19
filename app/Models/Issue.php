@@ -86,7 +86,7 @@ class Issue extends Model implements AuditableInterface
                 $status = 'W trakcie realizacji';
                 break;
             case self::STATUS_ENDED:
-                $staus = 'Zakończony';
+                $status = 'Zakończony';
                 break;
             case self::STATUS_CLOSED:
                 $status = 'Zamknięty';

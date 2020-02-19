@@ -13,7 +13,7 @@
                 </ul>
             </div>
 
-            <div class="col-lg-4">
+            <div v-if="canAddFiles" class="col-lg-4">
                 <h2>Dodaj plik</h2>
                 <div class="form-group">
                     <label for="issue-file">Wybierz plik</label>
@@ -41,6 +41,7 @@
                 issue: {},
                 error: "",
                 issueFile: null,
+                canAddFiles: true
             }
         },
         mounted() {
@@ -56,6 +57,16 @@
                     this.error = error
                 }).finally(() => {
                     loader.hide()
+                })
+
+                this.service.getUser().then(response => {
+                    this.issue.project.users.forEach(element => {
+                        if (response.data.id == element.id) {
+                            if ((element.pivot.role == "PROJECT_READER") && element.is_admin == false) this.canAddFiles = false
+                            else this.canAddFiles = true
+                            return 1;
+                        }
+                    });
                 })
             },
 

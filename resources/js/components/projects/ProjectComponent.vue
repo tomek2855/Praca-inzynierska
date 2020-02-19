@@ -30,7 +30,9 @@
                 error: "",
                 usersToAdd: [],
                 newUser: {},
-                menu: []
+                menu: [],
+                canEditProject: false,
+                canAddIssue: false
             }
         },
         mounted() {
@@ -41,7 +43,8 @@
                 this.menu = [
                     {
                         name: "Dodaj zadanie",
-                        link: { name: "projects.issues.add", params: { projectId: this.project.id } }
+                        link: { name: "projects.issues.add", params: { projectId: this.project.id } },
+                        show: this.canAddIssue
                     },
                     {
                         name: "Zadania",
@@ -53,7 +56,8 @@
                     },
                     {
                         name: "Edytuj projekt",
-                        link: { name: "projects.edit", params: { projectId: this.project.id } }
+                        link: { name: "projects.edit", params: { projectId: this.project.id } },
+                        show: this.canEditProject
                     }
                 ]
             },
@@ -69,6 +73,30 @@
                     this.usersToAdd = response.data
                 }).catch(error => {
                     this.error = error
+                })
+
+                this.service.getUser().then(response => {
+                    this.canEditProject = true
+
+                    this.project.users.forEach(element => {
+                        if (response.data.id == element.id) {
+                            if ((element.pivot.role == "PROJECT_READER" || element.pivot.role == "PROJECT_USER") && element.is_admin == false) this.canEditProject = false
+                            else this.canEditProject = true
+                            return 1;
+                        }
+                    });
+
+                    this.canAddIssue = true
+
+                    this.project.users.forEach(element => {
+                        if (response.data.id == element.id) {
+                            if ((element.pivot.role == "PROJECT_READER") && element.is_admin == false) this.canAddIssue = false
+                            else this.canAddIssue = true
+                            return 1;
+                        }
+                    });
+
+                    this.loadMenu()
                 })
             },
             addUser() {
